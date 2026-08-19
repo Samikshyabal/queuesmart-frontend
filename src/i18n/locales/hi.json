@@ -1,0 +1,92 @@
+{
+  "nav": {
+    "home": "होम",
+    "getToken": "टोकन लें",
+    "liveQueue": "लाइव कतार",
+    "staffLogin": "स्टाफ लॉगिन",
+    "dashboard": "डैशबोर्ड",
+    "counter": "काउंटर",
+    "logout": "लॉगआउट"
+  },
+  "landing": {
+    "badge": "स्मार्ट कतार प्रबंधन",
+    "heroTitle": "अब अंधेरे में इंतजार नहीं",
+    "heroDesc": "डिजिटल टोकन पाएं, अपनी लाइव स्थिति देखें, और बारी आने पर अलर्ट पाएं।",
+    "ctaToken": "अपना टोकन लें",
+    "ctaStaff": "स्टाफ लॉगिन",
+    "howTitle": "यह कैसे काम करता है",
+    "step1Title": "स्कैन करें या खोलें",
+    "step1Desc": "केंद्र पर QR कोड स्कैन करें या अपने फोन पर ऐप खोलें।",
+    "step2Title": "टोकन प्राप्त करें",
+    "step2Desc": "अपना विवरण दर्ज करें और तुरंत अपना डिजिटल टोकन पाएं।",
+    "step3Title": "आराम करें और प्रतीक्षा करें",
+    "step3Desc": "अपनी स्थिति लाइव ट्रैक करें और SMS अलर्ट पाएं।"
+  },
+  "token": {
+    "title": "अपना टोकन लें",
+    "subtitle": "डिजिटल तरीके से कतार में शामिल हों",
+    "namePlaceholder": "अपना पूरा नाम दर्ज करें",
+    "phonePlaceholder": "अपना मोबाइल नंबर दर्ज करें",
+    "nameLabel": "पूरा नाम",
+    "phoneLabel": "फोन नंबर",
+    "categoryLabel": "श्रेणी",
+    "submit": "कतार में शामिल हों",
+    "tokenIssued": "आपका टोकन",
+    "positionLabel": "कतार में स्थान",
+    "waitLabel": "अनुमानित प्रतीक्षा",
+    "minutes": "मिनट",
+    "smsNote": "बारी आने पर आपको SMS मिलेगा।",
+    "getAnother": "दूसरा टोकन लें"
+  },
+  "queue": {
+    "nowServing": "अभी सेवा हो रही है",
+    "nextUp": "अगला",
+    "avgWait": "औसत प्रतीक्षा",
+    "inQueue": "कतार में",
+    "minutes": "मि",
+    "live": "लाइव",
+    "upcomingTokens": "आने वाले टोकन"
+  },
+  "admin": {
+    "title": "एडमिन डैशबोर्ड",
+    "tokensServed": "सेवा किए टोकन",
+    "inQueue": "कतार में",
+    "priorityWaiting": "प्राथमिकता प्रतीक्षा में",
+    "activeCounters": "सक्रिय काउंटर",
+    "callNext": "अगला बुलाएं",
+    "nowServing": "अभी सेवा में",
+    "queueList": "कतार सूची",
+    "footfallChart": "आज का अनुमानित फुटफॉल",
+    "waitChart": "औसत प्रतीक्षा समय (आज)",
+    "priorityAlert": "प्राथमिकता उपयोगकर्ता अलर्ट",
+    "priorityAlertDesc": "एक प्राथमिकता ग्राहक कतार में प्रतीक्षा कर रहा है।",
+    "dismiss": "बंद करें"
+  },
+  "counter": {
+    "title": "काउंटर दृश्य",
+    "serving": "अभी सेवा में",
+    "markServed": "सेवा पूर्ण",
+    "skip": "छोड़ें",
+    "callAgain": "फिर बुलाएं",
+    "upNext": "अगला",
+    "noToken": "कोई सक्रिय टोकन नहीं"
+  },
+  "login": {
+    "title": "स्टाफ लॉगिन",
+    "subtitle": "एडमिन डैशबोर्ड एक्सेस करें",
+    "emailLabel": "ईमेल पता",
+    "emailPlaceholder": "admin@demo.com",
+    "passwordLabel": "पासवर्ड",
+    "passwordPlaceholder": "अपना पासवर्ड दर्ज करें",
+    "submit": "लॉगिन करें",
+    "demoHint": "डेमो: admin@demo.com / password123",
+    "error": "अमान्य ईमेल या पासवर्ड।"
+  },
+  "common": {
+    "loading": "लोड हो रहा है...",
+    "error": "कुछ गलत हो गया। कृपया पुनः प्रयास करें।",
+    "retry": "पुनः प्रयास",
+    "back": "वापस जाएं",
+    "close": "बंद करें"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "nav": {
+    "home": "Home",
+    "getToken": "Get Token",
+    "liveQueue": "Live Queue",
+    "staffLogin": "Staff Login",
+    "dashboard": "Dashboard",
+    "counter": "Counter",
+    "logout": "Logout"
+  },
+  "landing": {
+    "badge": "Smart Queue Management",
+    "heroTitle": "No More Waiting in the Dark",
+    "heroDesc": "Get your queue token digitally, see your live position, and get alerted when your turn is near.",
+    "ctaToken": "Get Your Token",
+    "ctaStaff": "Staff Login",
+    "howTitle": "How It Works",
+    "step1Title": "Scan or Open",
+    "step1Desc": "Scan the QR code at the centre or open the app on your phone.",
+    "step2Title": "Get Your Token",
+    "step2Desc": "Enter your details and receive your digital queue token instantly.",
+    "step3Title": "Relax & Wait",
+    "step3Desc": "Track your position live and get an SMS alert when you're next."
+  },
+  "token": {
+    "title": "Get Your Token",
+    "subtitle": "Join the queue digitally — no need to stand in line",
+    "namePlaceholder": "Enter your full name",
+    "phonePlaceholder": "Enter your mobile number",
+    "nameLabel": "Full Name",
+    "phoneLabel": "Phone Number",
+    "categoryLabel": "Category",
+    "submit": "Join Queue",
+    "tokenIssued": "Your Token",
+    "positionLabel": "Queue Position",
+    "waitLabel": "Estimated Wait",
+    "minutes": "minutes",
+    "smsNote": "You will receive an SMS when your turn is near.",
+    "getAnother": "Get Another Token"
+  },
+  "queue": {
+    "nowServing": "Now Serving",
+    "nextUp": "Next Up",
+    "avgWait": "Avg Wait",
+    "inQueue": "In Queue",
+    "minutes": "min",
+    "live": "LIVE",
+    "upcomingTokens": "Upcoming Tokens"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "tokensServed": "Tokens Served",
+    "inQueue": "In Queue",
+    "priorityWaiting": "Priority Waiting",
+    "activeCounters": "Active Counters",
+    "callNext": "Call Next Token",
+    "nowServing": "Now Serving",
+    "queueList": "Queue List",
+    "footfallChart": "Predicted Footfall Today",
+    "waitChart": "Avg Wait Time (Today)",
+    "priorityAlert": "Priority User Alert",
+    "priorityAlertDesc": "A priority customer is waiting in the queue.",
+    "dismiss": "Dismiss"
+  },
+  "counter": {
+    "title": "Counter View",
+    "serving": "Currently Serving",
+    "markServed": "Mark as Served",
+    "skip": "Skip",
+    "callAgain": "Call Again",
+    "upNext": "Up Next",
+    "noToken": "No active token"
+  },
+  "login": {
+    "title": "Staff Login",
+    "subtitle": "Sign in to access the admin dashboard",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "admin@demo.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "submit": "Sign In",
+    "demoHint": "Demo: admin@demo.com / password123",
+    "error": "Invalid email or password. Please try again."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong. Please try again.",
+    "retry": "Retry",
+    "back": "Go Back",
+    "close": "Close"
+  }
+}
