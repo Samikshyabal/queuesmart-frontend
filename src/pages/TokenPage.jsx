@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../components/ui/Button'
-import Card from '../components/ui/Card'
 import Badge from '../components/ui/Badge'
 import { CATEGORY_CONFIG, estimateWait, MOCK_QUEUE_STATUS } from '../mockData'
 
@@ -41,8 +40,67 @@ const SERVICES = [
   },
 ]
 
-export default function TokenPage() {
+// Crisp High-Contrast SVG QR Code Component
+function TicketQRCode({ tokenNumber }) {
+  return (
+    <div className="bg-white p-3.5 rounded-2xl border-2 border-slate-200 shadow-sm flex flex-col items-center justify-center">
+      <svg
+        viewBox="0 0 120 120"
+        className="w-28 h-28 sm:w-32 sm:h-32 text-slate-900"
+        fill="currentColor"
+        shapeRendering="crispEdges"
+      >
+        {/* Outer Frame Top Left */}
+        <rect x="10" y="10" width="30" height="30" rx="4" fill="currentColor" />
+        <rect x="15" y="15" width="20" height="20" rx="2" fill="#ffffff" />
+        <rect x="20" y="20" width="10" height="10" rx="1" fill="currentColor" />
 
+        {/* Outer Frame Top Right */}
+        <rect x="80" y="10" width="30" height="30" rx="4" fill="currentColor" />
+        <rect x="85" y="15" width="20" height="20" rx="2" fill="#ffffff" />
+        <rect x="90" y="20" width="10" height="10" rx="1" fill="currentColor" />
+
+        {/* Outer Frame Bottom Left */}
+        <rect x="10" y="80" width="30" height="30" rx="4" fill="currentColor" />
+        <rect x="15" y="85" width="20" height="20" rx="2" fill="#ffffff" />
+        <rect x="20" y="90" width="10" height="10" rx="1" fill="currentColor" />
+
+        {/* Dynamic Pattern Pixels */}
+        <rect x="46" y="12" width="6" height="6" fill="currentColor" />
+        <rect x="58" y="12" width="12" height="6" fill="currentColor" />
+        <rect x="46" y="24" width="18" height="6" fill="currentColor" />
+        <rect x="52" y="36" width="6" height="12" fill="currentColor" />
+        <rect x="64" y="36" width="10" height="6" fill="currentColor" />
+
+        <rect x="12" y="48" width="8" height="6" fill="currentColor" />
+        <rect x="26" y="48" width="14" height="6" fill="currentColor" />
+        <rect x="46" y="52" width="28" height="8" fill="currentColor" />
+        <rect x="80" y="48" width="12" height="6" fill="currentColor" />
+        <rect x="98" y="48" width="10" height="6" fill="currentColor" />
+
+        <rect x="12" y="60" width="16" height="6" fill="currentColor" />
+        <rect x="34" y="60" width="6" height="12" fill="currentColor" />
+        <rect x="52" y="68" width="16" height="6" fill="currentColor" />
+        <rect x="74" y="60" width="20" height="6" fill="currentColor" />
+        <rect x="100" y="60" width="8" height="12" fill="currentColor" />
+
+        <rect x="46" y="82" width="10" height="12" fill="currentColor" />
+        <rect x="62" y="82" width="18" height="6" fill="currentColor" />
+        <rect x="86" y="82" width="8" height="18" fill="currentColor" />
+        <rect x="100" y="82" width="8" height="6" fill="currentColor" />
+
+        <rect x="52" y="100" width="22" height="8" fill="currentColor" />
+        <rect x="80" y="104" width="12" height="6" fill="currentColor" />
+        <rect x="98" y="94" width="10" height="16" fill="currentColor" />
+      </svg>
+      <span className="text-2xs font-mono font-bold text-slate-500 mt-1.5 uppercase tracking-wider">
+        SCAN TO TRACK • {tokenNumber}
+      </span>
+    </div>
+  )
+}
+
+export default function TokenPage() {
   // Form State
   const [selectedService, setSelectedService] = useState('general')
   const [fullName, setFullName] = useState('')
@@ -104,7 +162,7 @@ export default function TokenPage() {
       })
 
       setIsSubmitting(false)
-    }, 600)
+    }, 500)
   }
 
   // Reset form to generate another token
@@ -131,98 +189,103 @@ export default function TokenPage() {
         <div className="max-w-xl mx-auto w-full animate-scale-in">
           {/* Success Banner */}
           <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-success-500/20 text-success-400 text-2xl mb-3 border border-success-500/30 animate-number-pop">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-emerald-100 text-emerald-700 text-2xl mb-3 border border-emerald-300 shadow-sm animate-number-pop">
               ✓
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-white">
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
               Token Generated Successfully!
             </h1>
-            <p className="text-sm text-gray-400 mt-1">
-              Your turn will be called on the live display board.
+            <p className="text-sm text-slate-600 mt-1">
+              Your token has been added to the queue. Watch the live display boards.
             </p>
           </div>
 
           {/* Ticket Card Container */}
-          <Card className="border-2 border-primary-500/40 relative overflow-hidden bg-dark-800 shadow-2xl p-6 sm:p-8">
-            {/* Top punch-out notch for ticket feel */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-4 bg-dark-900 rounded-b-full border-b border-surface-border" />
+          <div className="border border-slate-300 rounded-3xl relative overflow-hidden bg-white shadow-card-elevated p-6 sm:p-8">
+            {/* Top punch-out notch for ticket realism */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-4 bg-slate-100 rounded-b-full border-b border-slate-300" />
 
             {/* Service & Date Header */}
-            <div className="flex items-center justify-between border-b border-surface-border pb-4 mb-6">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
               <div>
-                <span className="text-xs font-semibold text-primary-400 uppercase tracking-wider">
+                <span className="text-xs font-bold text-primary-700 uppercase tracking-wider">
                   {generatedTicket.service.counter}
                 </span>
-                <h2 className="text-base font-bold text-white">
+                <h2 className="text-base font-bold text-slate-900">
                   {generatedTicket.service.name}
                 </h2>
               </div>
               <div className="text-right">
-                <span className="text-xs text-gray-400 block">{generatedTicket.date}</span>
-                <span className="text-xs font-mono text-gray-400">{generatedTicket.generatedAt}</span>
+                <span className="text-xs text-slate-600 font-medium block">{generatedTicket.date}</span>
+                <span className="text-xs font-mono text-slate-500">{generatedTicket.generatedAt}</span>
               </div>
             </div>
 
-            {/* Main Token Display Box */}
-            <div className="bg-dark-900/90 border border-surface-border rounded-2xl p-6 text-center mb-6 relative">
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest block mb-1">
-                Your Token Number
-              </span>
-              <div className="text-5xl sm:text-6xl font-black tracking-tight text-white gradient-text py-1 animate-number-pop">
-                {generatedTicket.tokenNumber}
+            {/* Main Token Display Box + High-Contrast QR Code */}
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 sm:p-6 text-center mb-6 flex flex-col sm:flex-row items-center justify-between gap-5">
+              <div className="text-center sm:text-left flex-1">
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-widest block mb-1">
+                  Your Queue Number
+                </span>
+                <div className="text-5xl sm:text-6xl font-black tracking-tight text-primary-700 py-1 animate-number-pop">
+                  {generatedTicket.tokenNumber}
+                </div>
+
+                {/* Priority Category Badge */}
+                <div className="mt-3 flex justify-center sm:justify-start">
+                  <Badge
+                    variant={generatedTicket.category}
+                    label={CATEGORY_CONFIG[generatedTicket.category]?.label || 'Standard'}
+                    showIcon
+                    size="md"
+                  />
+                </div>
               </div>
 
-              {/* Priority Category Badge */}
-              <div className="mt-3 flex justify-center">
-                <Badge
-                  variant={generatedTicket.category}
-                  label={CATEGORY_CONFIG[generatedTicket.category]?.label || 'Standard'}
-                  showIcon
-                  size="md"
-                />
-              </div>
+              {/* QR Code Container */}
+              <TicketQRCode tokenNumber={generatedTicket.tokenNumber} />
             </div>
 
             {/* Live Queue Estimates Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
-              <div className="bg-dark-700/60 rounded-xl p-3 text-center border border-surface-border">
+              <div className="bg-slate-50 rounded-xl p-3.5 text-center border border-slate-200">
                 <span className="text-2xl block mb-0.5">⏱️</span>
-                <span className="text-xs text-gray-400 block">Est. Wait</span>
-                <span className="text-base font-bold text-accent-400">
+                <span className="text-xs text-slate-500 font-medium block">Est. Wait</span>
+                <span className="text-base font-bold text-accent-700">
                   ~{generatedTicket.waitTime} mins
                 </span>
               </div>
 
-              <div className="bg-dark-700/60 rounded-xl p-3 text-center border border-surface-border">
+              <div className="bg-slate-50 rounded-xl p-3.5 text-center border border-slate-200">
                 <span className="text-2xl block mb-0.5">👥</span>
-                <span className="text-xs text-gray-400 block">Position</span>
-                <span className="text-base font-bold text-white">
+                <span className="text-xs text-slate-500 font-medium block">Position</span>
+                <span className="text-base font-bold text-slate-900">
                   #{generatedTicket.queuePosition} in line
                 </span>
               </div>
 
-              <div className="bg-dark-700/60 rounded-xl p-3 text-center border border-surface-border col-span-2 sm:col-span-1">
+              <div className="bg-slate-50 rounded-xl p-3.5 text-center border border-slate-200 col-span-2 sm:col-span-1">
                 <span className="text-2xl block mb-0.5">📢</span>
-                <span className="text-xs text-gray-400 block">Now Serving</span>
-                <span className="text-base font-bold text-success-400">
+                <span className="text-xs text-slate-500 font-medium block">Now Serving</span>
+                <span className="text-base font-bold text-emerald-700">
                   Token #{MOCK_QUEUE_STATUS.nowServing}
                 </span>
               </div>
             </div>
 
             {/* Customer Details Summary */}
-            <div className="bg-dark-900/50 rounded-xl p-4 text-xs space-y-1.5 text-gray-300 border border-surface-border/60 mb-6">
+            <div className="bg-slate-50/80 rounded-xl p-4 text-xs space-y-2 text-slate-700 border border-slate-200 mb-6">
               <div className="flex justify-between">
-                <span className="text-gray-500">Visitor Name:</span>
-                <span className="font-medium text-white">{generatedTicket.name}</span>
+                <span className="text-slate-500">Visitor Name:</span>
+                <span className="font-semibold text-slate-900">{generatedTicket.name}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Mobile Number:</span>
-                <span className="font-mono text-white">{generatedTicket.phone}</span>
+                <span className="text-slate-500">Mobile Number:</span>
+                <span className="font-mono font-medium text-slate-900">{generatedTicket.phone}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">SMS Notification:</span>
-                <span className="text-success-400 font-medium">
+                <span className="text-slate-500">SMS Notification:</span>
+                <span className="text-emerald-700 font-semibold">
                   {generatedTicket.receiveSms ? '✓ Enabled' : 'Disabled'}
                 </span>
               </div>
@@ -230,7 +293,7 @@ export default function TokenPage() {
 
             {/* Print feedback toast */}
             {printed && (
-              <div className="mb-4 text-center py-2 px-3 bg-primary-500/20 border border-primary-500/30 text-primary-300 rounded-lg text-xs animate-fade-in">
+              <div className="mb-4 text-center py-2 px-3 bg-primary-50 border border-primary-200 text-primary-800 rounded-lg text-xs font-semibold animate-fade-in">
                 Printing ticket receipt...
               </div>
             )}
@@ -263,36 +326,36 @@ export default function TokenPage() {
                 variant="ghost"
                 size="md"
                 onClick={handleReset}
-                className="sm:w-auto text-gray-400"
+                className="sm:w-auto"
               >
                 Book Another
               </Button>
             </div>
-          </Card>
+          </div>
         </div>
       ) : (
         /* ── View 2: Token Booking Input Form ──────────────────────────────── */
         <div className="animate-fade-in">
           {/* Header */}
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <span className="text-xs font-bold text-accent-400 uppercase tracking-widest">
-              Digital Queue Desk
+            <span className="text-xs font-bold text-primary-700 uppercase tracking-widest bg-primary-50 border border-primary-200 px-3 py-1 rounded-full">
+              Digital Queue Kiosk
             </span>
-            <h1 className="text-3xl sm:text-4xl font-black text-white mt-1">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
               Get Your Digital Token
             </h1>
-            <p className="text-sm sm:text-base text-gray-400 mt-2">
-              Select your required service, fill your details, and track your queue in real time without standing in line.
+            <p className="text-sm sm:text-base text-slate-600 mt-2">
+              Select your required service, enter your details, and track your position in real time without standing in physical queues.
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* 1. Service Selection */}
             <div>
-              <label className="block text-sm font-semibold text-white mb-3">
-                1. Select Service Category <span className="text-danger-400">*</span>
+              <label className="block text-sm font-bold text-slate-900 mb-3">
+                1. Select Service Category <span className="text-rose-600">*</span>
               </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {SERVICES.map((srv) => {
                   const isSelected = selectedService === srv.id
                   return (
@@ -300,25 +363,25 @@ export default function TokenPage() {
                       key={srv.id}
                       onClick={() => setSelectedService(srv.id)}
                       className={[
-                        'cursor-pointer rounded-2xl p-4 border transition-all duration-200 flex items-start gap-3.5',
+                        'cursor-pointer rounded-2xl p-4.5 border-2 transition-all duration-200 flex items-start gap-3.5',
                         isSelected
-                          ? 'bg-primary-600/15 border-primary-500 shadow-glow-primary'
-                          : 'bg-dark-800/80 border-surface-border hover:border-gray-600 hover:bg-dark-800',
+                          ? 'bg-primary-50/60 border-primary-600 shadow-sm ring-1 ring-primary-600/20'
+                          : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/50 shadow-2xs',
                       ].join(' ')}
                     >
-                      <div className="w-10 h-10 rounded-xl bg-dark-700 border border-surface-border flex items-center justify-center text-xl shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-xl shrink-0">
                         {srv.icon}
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2">
-                          <h3 className="font-semibold text-white text-sm truncate">
+                          <h3 className="font-bold text-slate-900 text-sm truncate">
                             {srv.name}
                           </h3>
-                          <span className="text-2xs font-bold px-2 py-0.5 rounded-full bg-dark-700 text-primary-300 border border-surface-border shrink-0">
+                          <span className="text-2xs font-bold px-2 py-0.5 rounded-full bg-slate-100 text-primary-700 border border-slate-200 shrink-0">
                             {srv.code}
                           </span>
                         </div>
-                        <p className="text-xs text-gray-400 mt-1 leading-relaxed">
+                        <p className="text-xs text-slate-600 mt-1 leading-relaxed">
                           {srv.description}
                         </p>
                       </div>
@@ -329,16 +392,16 @@ export default function TokenPage() {
             </div>
 
             {/* 2. Customer Personal Details */}
-            <div className="glass-card p-6 sm:p-8 space-y-6">
-              <h2 className="text-base font-bold text-white border-b border-surface-border pb-3">
+            <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
+              <h2 className="text-base font-bold text-slate-900 border-b border-slate-200 pb-3">
                 2. Visitor Information &amp; Priority
               </h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {/* Full Name */}
                 <div>
-                  <label htmlFor="token-name" className="block text-xs font-semibold text-gray-300 mb-1.5">
-                    Full Name <span className="text-danger-400">*</span>
+                  <label htmlFor="token-name" className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    Full Name <span className="text-rose-600">*</span>
                   </label>
                   <input
                     id="token-name"
@@ -348,18 +411,18 @@ export default function TokenPage() {
                     placeholder="e.g. Ramesh Kumar"
                     className={[
                       'input-field',
-                      errors.fullName ? 'border-danger-500 focus:border-danger-500 focus:ring-danger-500' : '',
+                      errors.fullName ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20' : '',
                     ].join(' ')}
                   />
                   {errors.fullName && (
-                    <p className="text-xs text-danger-400 mt-1">{errors.fullName}</p>
+                    <p className="text-xs text-rose-600 font-medium mt-1">{errors.fullName}</p>
                   )}
                 </div>
 
                 {/* Mobile Phone */}
                 <div>
-                  <label htmlFor="token-phone" className="block text-xs font-semibold text-gray-300 mb-1.5">
-                    Mobile Phone Number <span className="text-danger-400">*</span>
+                  <label htmlFor="token-phone" className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    Mobile Phone Number <span className="text-rose-600">*</span>
                   </label>
                   <input
                     id="token-phone"
@@ -370,21 +433,21 @@ export default function TokenPage() {
                     maxLength={10}
                     className={[
                       'input-field font-mono',
-                      errors.phone ? 'border-danger-500 focus:border-danger-500 focus:ring-danger-500' : '',
+                      errors.phone ? 'border-rose-500 focus:border-rose-500 focus:ring-rose-500/20' : '',
                     ].join(' ')}
                   />
                   {errors.phone && (
-                    <p className="text-xs text-danger-400 mt-1">{errors.phone}</p>
+                    <p className="text-xs text-rose-600 font-medium mt-1">{errors.phone}</p>
                   )}
                 </div>
               </div>
 
               {/* Priority Category Selection */}
               <div>
-                <label className="block text-xs font-semibold text-gray-300 mb-2">
+                <label className="block text-xs font-semibold text-slate-700 mb-2">
                   Special Category / Priority Status
                 </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                   {Object.entries(CATEGORY_CONFIG).map(([key, cfg]) => {
                     const isSelected = category === key
                     return (
@@ -393,10 +456,10 @@ export default function TokenPage() {
                         type="button"
                         onClick={() => setCategory(key)}
                         className={[
-                          'flex items-center gap-2 p-3 rounded-xl border text-xs font-medium transition-all text-left',
+                          'flex items-center gap-2 p-3 rounded-xl border-2 text-xs font-semibold transition-all text-left',
                           isSelected
-                            ? 'bg-primary-600/20 border-primary-500 text-white shadow'
-                            : 'bg-dark-700/60 border-surface-border text-gray-300 hover:border-gray-500',
+                            ? 'bg-primary-50 border-primary-600 text-primary-900 shadow-xs'
+                            : 'bg-white border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50',
                         ].join(' ')}
                       >
                         <span className="text-lg" aria-hidden="true">{cfg.icon}</span>
@@ -405,7 +468,7 @@ export default function TokenPage() {
                     )
                   })}
                 </div>
-                <p className="text-2xs text-gray-500 mt-2">
+                <p className="text-2xs text-slate-500 mt-2 font-medium">
                   Priority categories will be scheduled with equitable fairness to reduce waiting times for vulnerable visitors.
                 </p>
               </div>
@@ -417,9 +480,9 @@ export default function TokenPage() {
                     type="checkbox"
                     checked={receiveSms}
                     onChange={(e) => setReceiveSms(e.target.checked)}
-                    className="w-4 h-4 rounded bg-dark-700 border-surface-border text-primary-600 focus:ring-primary-500 focus:ring-offset-dark-900"
+                    className="w-4 h-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
                   />
-                  <span className="text-xs text-gray-300">
+                  <span className="text-xs text-slate-700 font-medium">
                     Send me free SMS alerts when my turn is 5 minutes away.
                   </span>
                 </label>
@@ -428,7 +491,7 @@ export default function TokenPage() {
 
             {/* Form Submit CTA */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
-              <Link to="/" className="text-xs text-gray-400 hover:text-white flex items-center gap-1">
+              <Link to="/" className="text-xs font-semibold text-slate-600 hover:text-slate-900 flex items-center gap-1">
                 ← Back to Home
               </Link>
 

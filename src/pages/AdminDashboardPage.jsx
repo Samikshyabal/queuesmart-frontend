@@ -100,17 +100,17 @@ export default function AdminDashboardPage() {
   })
 
   return (
-    <main className="flex-1 flex flex-col page-section py-8 max-w-7xl w-full">
+    <main className="flex-1 flex flex-col page-section py-8 max-w-7xl w-full bg-slate-50">
       {/* ── Top Header & Fast Action Bar ───────────────────────────────────── */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-4 border-b border-surface-border">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-4 border-b border-slate-200">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-2xs px-2.5 py-0.5 rounded-full font-bold bg-primary-600/20 text-primary-300 border border-primary-500/30">
+            <span className="text-2xs px-2.5 py-0.5 rounded-full font-bold bg-primary-100 text-primary-800 border border-primary-200">
               OPERATIONS CONTROL
             </span>
-            <span className="text-2xs text-gray-500 font-mono">Real-time Terminal</span>
+            <span className="text-2xs text-slate-500 font-mono font-medium">Real-time Terminal</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
             Crowd &amp; Service Management Console
           </h1>
         </div>
@@ -123,7 +123,7 @@ export default function AdminDashboardPage() {
             </Button>
           </Link>
           <Link to="/queue">
-            <Button variant="ghost" size="sm" className="text-xs border border-surface-border">
+            <Button variant="ghost" size="sm" className="text-xs border border-slate-200 bg-white">
               <span>📺</span> Public TV Board
             </Button>
           </Link>
@@ -132,14 +132,14 @@ export default function AdminDashboardPage() {
 
       {/* Action Toast Feedback */}
       {actionNotice && (
-        <div className="mb-6 p-3 rounded-xl bg-primary-600/20 border border-primary-500/40 text-primary-200 text-xs flex items-center justify-between animate-fade-in shadow-glow-primary">
-          <div className="flex items-center gap-2">
+        <div className="mb-6 p-3.5 rounded-xl bg-primary-50 border border-primary-200 text-primary-900 text-xs flex items-center justify-between animate-fade-in shadow-sm">
+          <div className="flex items-center gap-2 font-medium">
             <span>⚡</span>
             <span>{actionNotice}</span>
           </div>
           <button
             onClick={() => setActionNotice('')}
-            className="text-primary-300 hover:text-white font-bold text-xs"
+            className="text-primary-600 hover:text-primary-900 font-bold text-xs p-1"
           >
             ✕
           </button>
@@ -148,62 +148,62 @@ export default function AdminDashboardPage() {
 
       {/* ── 1. Analytics KPI Metric Cards ──────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="glass-card p-5 border-l-4 border-primary-500 relative overflow-hidden">
+        <div className="bg-white rounded-2xl p-5 border border-slate-200 border-l-4 border-l-primary-600 shadow-xs">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
               Total Visitors Today
             </span>
-            <span className="text-xl p-1.5 rounded-lg bg-dark-700">👥</span>
+            <span className="text-xl p-1.5 rounded-lg bg-slate-100">👥</span>
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-white">
+          <div className="text-2xl sm:text-3xl font-black text-slate-900">
             {totalServed + tokensList.length}
           </div>
-          <span className="text-2xs text-success-400 font-medium mt-1 block">
+          <span className="text-2xs text-emerald-700 font-bold mt-1 block">
             ↑ 14.8% vs last week average
           </span>
         </div>
 
-        <div className="glass-card p-5 border-l-4 border-accent-400 relative overflow-hidden">
+        <div className="bg-white rounded-2xl p-5 border border-slate-200 border-l-4 border-l-accent-600 shadow-xs">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
               Average Wait Time
             </span>
-            <span className="text-xl p-1.5 rounded-lg bg-dark-700">⏱️</span>
+            <span className="text-xl p-1.5 rounded-lg bg-slate-100">⏱️</span>
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-accent-400">
+          <div className="text-2xl sm:text-3xl font-black text-accent-700">
             ~{MOCK_QUEUE_STATUS.avgWaitMinutes} mins
           </div>
-          <span className="text-2xs text-accent-300 font-medium mt-1 block">
+          <span className="text-2xs text-accent-700 font-bold mt-1 block">
             Target SLA: &lt; 15 mins (Optimal)
           </span>
         </div>
 
-        <div className="glass-card p-5 border-l-4 border-warning-500 relative overflow-hidden">
+        <div className="bg-white rounded-2xl p-5 border border-slate-200 border-l-4 border-l-amber-600 shadow-xs">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
               Currently Waiting
             </span>
-            <span className="text-xl p-1.5 rounded-lg bg-dark-700">⏳</span>
+            <span className="text-xl p-1.5 rounded-lg bg-slate-100">⏳</span>
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-warning-400">
+          <div className="text-2xl sm:text-3xl font-black text-slate-900">
             {tokensList.length}
           </div>
-          <span className="text-2xs text-warning-300 font-medium mt-1 block">
-            {tokensList.filter((t) => t.category !== 'normal').length} Priority category users
+          <span className="text-2xs text-amber-800 font-bold mt-1 block">
+            {tokensList.filter((t) => t.category !== 'normal').length} Priority category visitors
           </span>
         </div>
 
-        <div className="glass-card p-5 border-l-4 border-success-500 relative overflow-hidden">
+        <div className="bg-white rounded-2xl p-5 border border-slate-200 border-l-4 border-l-emerald-600 shadow-xs">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
               Completed / Served
             </span>
-            <span className="text-xl p-1.5 rounded-lg bg-dark-700">✓</span>
+            <span className="text-xl p-1.5 rounded-lg bg-slate-100">✓</span>
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-success-400">
+          <div className="text-2xl sm:text-3xl font-black text-emerald-700">
             {totalServed}
           </div>
-          <span className="text-2xs text-success-300 font-medium mt-1 block">
+          <span className="text-2xs text-emerald-700 font-bold mt-1 block">
             98.2% on-time resolution
           </span>
         </div>
@@ -211,30 +211,30 @@ export default function AdminDashboardPage() {
 
       {/* ── 2. Predictive Footfall & Wait Time Analytics Chart ──────────────── */}
       <section className="mb-10">
-        <Card className="p-6 bg-dark-800/90">
+        <Card className="p-6 bg-white border border-slate-200 shadow-xs">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-accent-400 uppercase tracking-wider">
+                <span className="text-xs font-bold text-accent-700 uppercase tracking-wider">
                   AI Demand Forecasting
                 </span>
-                <span className="text-2xs bg-accent-500/20 text-accent-300 px-2 py-0.5 rounded-full font-mono">
+                <span className="text-2xs bg-accent-50 text-accent-800 border border-accent-200 px-2 py-0.5 rounded-full font-mono font-bold">
                   Prophet Model
                 </span>
               </div>
-              <h2 className="text-lg font-bold text-white mt-0.5">
-                {chartMode === 'footfall' ? 'Hourly Crowd Footfall vs Capacity' : 'Average Service Wait Duration'}
+              <h2 className="text-lg font-bold text-slate-900 mt-0.5">
+                {chartMode === 'footfall' ? 'Hourly Crowd Footfall vs Counter Capacity' : 'Average Service Wait Duration Trend'}
               </h2>
             </div>
 
             {/* Chart Mode Toggle */}
-            <div className="flex bg-dark-700 p-1 rounded-xl border border-surface-border text-xs">
+            <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs">
               <button
                 type="button"
                 onClick={() => setChartMode('footfall')}
                 className={[
-                  'px-3 py-1.5 rounded-lg font-semibold transition-all',
-                  chartMode === 'footfall' ? 'bg-primary-600 text-white' : 'text-gray-400 hover:text-white',
+                  'px-3 py-1.5 rounded-lg font-bold transition-all',
+                  chartMode === 'footfall' ? 'bg-white text-primary-700 shadow-xs' : 'text-slate-600 hover:text-slate-900',
                 ].join(' ')}
               >
                 Predicted Footfall
@@ -243,8 +243,8 @@ export default function AdminDashboardPage() {
                 type="button"
                 onClick={() => setChartMode('waittime')}
                 className={[
-                  'px-3 py-1.5 rounded-lg font-semibold transition-all',
-                  chartMode === 'waittime' ? 'bg-primary-600 text-white' : 'text-gray-400 hover:text-white',
+                  'px-3 py-1.5 rounded-lg font-bold transition-all',
+                  chartMode === 'waittime' ? 'bg-white text-primary-700 shadow-xs' : 'text-slate-600 hover:text-slate-900',
                 ].join(' ')}
               >
                 Wait Time Trend
@@ -257,37 +257,37 @@ export default function AdminDashboardPage() {
             <ResponsiveContainer width="100%" height="100%">
               {chartMode === 'footfall' ? (
                 <BarChart data={MOCK_FOOTFALL} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#2d3358" vertical={false} />
-                  <XAxis dataKey="hour" stroke="#818cf8" fontSize={12} tickLine={false} />
-                  <YAxis stroke="#818cf8" fontSize={12} tickLine={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                  <XAxis dataKey="hour" stroke="#64748b" fontSize={12} tickLine={false} />
+                  <YAxis stroke="#64748b" fontSize={12} tickLine={false} />
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#13162b', borderColor: '#2d3358', borderRadius: '12px', color: '#fff' }}
-                    labelStyle={{ color: '#818cf8', fontWeight: 'bold' }}
+                    contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', borderRadius: '12px', color: '#0f172a', boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}
+                    labelStyle={{ color: '#4338ca', fontWeight: 'bold' }}
                   />
-                  <Bar dataKey="count" fill="#6366f1" radius={[6, 6, 0, 0]} name="Expected Visitors" />
+                  <Bar dataKey="count" fill="#4f46e5" radius={[6, 6, 0, 0]} name="Expected Visitors" />
                 </BarChart>
               ) : (
                 <AreaChart data={MOCK_WAIT_TIME} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
-                    <linearGradient id="waitGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.5} />
-                      <stop offset="95%" stopColor="#06b6d4" stopOpacity={0} />
+                    <linearGradient id="waitGradientLight" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#0891b2" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#0891b2" stopOpacity={0.02} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#2d3358" vertical={false} />
-                  <XAxis dataKey="hour" stroke="#818cf8" fontSize={12} tickLine={false} />
-                  <YAxis stroke="#818cf8" fontSize={12} tickLine={false} unit="m" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                  <XAxis dataKey="hour" stroke="#64748b" fontSize={12} tickLine={false} />
+                  <YAxis stroke="#64748b" fontSize={12} tickLine={false} unit="m" />
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#13162b', borderColor: '#2d3358', borderRadius: '12px', color: '#fff' }}
-                    labelStyle={{ color: '#22d3ee', fontWeight: 'bold' }}
+                    contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', borderRadius: '12px', color: '#0f172a', boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}
+                    labelStyle={{ color: '#0891b2', fontWeight: 'bold' }}
                   />
-                  <Area type="monotone" dataKey="wait" stroke="#22d3ee" strokeWidth={3} fillOpacity={1} fill="url(#waitGradient)" name="Wait (mins)" />
+                  <Area type="monotone" dataKey="wait" stroke="#0891b2" strokeWidth={3} fillOpacity={1} fill="url(#waitGradientLight)" name="Wait (mins)" />
                 </AreaChart>
               )}
             </ResponsiveContainer>
           </div>
-          <p className="text-2xs text-gray-500 mt-2 text-right">
-            * Peak hours predicted between 11:00 AM - 01:00 PM based on past historical traffic.
+          <p className="text-2xs text-slate-500 mt-2 text-right font-medium">
+            * Peak hours forecast between 11:00 AM - 01:00 PM based on past historical arrival patterns.
           </p>
         </Card>
       </section>
@@ -295,10 +295,10 @@ export default function AdminDashboardPage() {
       {/* ── 3. Counter Status Mini Overview Grid ───────────────────────────── */}
       <section className="mb-10">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-base font-bold text-white flex items-center gap-2">
+          <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
             <span>🏢</span> Service Counter Desk Operational Status
           </h2>
-          <span className="text-xs text-gray-400">
+          <span className="text-xs font-semibold text-slate-500">
             {counters.filter((c) => c.status === 'Active').length} of {counters.length} Desks Active
           </span>
         </div>
@@ -307,45 +307,44 @@ export default function AdminDashboardPage() {
           {counters.map((ctr) => {
             const isActive = ctr.status === 'Active'
             return (
-              <Card
+              <div
                 key={ctr.id}
                 className={[
-                  'border transition-all duration-200',
-                  isActive ? 'border-surface-border bg-dark-800' : 'border-dashed border-gray-700 bg-dark-900/60 opacity-80',
+                  'rounded-2xl p-4.5 border transition-all duration-150 bg-white shadow-2xs',
+                  isActive ? 'border-slate-200' : 'border-dashed border-amber-300 bg-amber-50/30',
                 ].join(' ')}
-                padding="sm"
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-white">{ctr.name}</span>
+                  <span className="text-xs font-bold text-slate-900">{ctr.name}</span>
                   <span
                     className={[
-                      'text-2xs font-semibold px-2 py-0.5 rounded-full',
-                      isActive ? 'bg-success-500/15 text-success-400' : 'bg-warning-500/15 text-warning-400',
+                      'text-2xs font-bold px-2 py-0.5 rounded-full',
+                      isActive ? 'bg-emerald-50 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-800 border border-amber-300',
                     ].join(' ')}
                   >
                     {ctr.status}
                   </span>
                 </div>
 
-                <p className="text-xs text-gray-400 truncate mb-1">{ctr.service}</p>
-                <div className="flex items-center justify-between text-2xs text-gray-400 mb-3">
-                  <span>Clerk: <strong className="text-gray-300">{ctr.clerk}</strong></span>
-                  <span className="font-mono text-primary-300">{ctr.speed}</span>
+                <p className="text-xs text-slate-600 truncate mb-2 font-medium">{ctr.service}</p>
+                <div className="flex items-center justify-between text-2xs text-slate-500 mb-3">
+                  <span>Clerk: <strong className="text-slate-800">{ctr.clerk}</strong></span>
+                  <span className="font-mono font-bold text-primary-700">{ctr.speed}</span>
                 </div>
 
-                <div className="pt-2 border-t border-surface-border flex items-center justify-between">
-                  <span className="text-2xs text-gray-400">
-                    Serving: <strong className="text-white font-mono text-xs">{ctr.currentToken}</strong>
+                <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+                  <span className="text-2xs text-slate-500">
+                    Serving: <strong className="text-slate-900 font-mono text-xs">{ctr.currentToken}</strong>
                   </span>
                   <button
                     type="button"
                     onClick={() => handleToggleCounter(ctr.id)}
-                    className="text-2xs font-semibold text-primary-400 hover:text-primary-300 underline"
+                    className="text-2xs font-bold text-primary-600 hover:text-primary-800 underline"
                   >
                     {isActive ? 'Set Break' : 'Resume'}
                   </button>
                 </div>
-              </Card>
+              </div>
             )
           })}
         </div>
@@ -355,11 +354,11 @@ export default function AdminDashboardPage() {
       <section className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h2 className="text-base font-bold text-white flex items-center gap-2">
+            <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
               <span>📋</span> Active Queue Management Table
             </h2>
-            <p className="text-xs text-gray-400">
-              Manage waiting visitors, manually adjust queue order, or trigger priority fairness boost
+            <p className="text-xs text-slate-600">
+              Manage waiting visitors, adjust queue priority, or mark completed service
             </p>
           </div>
 
@@ -375,15 +374,15 @@ export default function AdminDashboardPage() {
             />
 
             {/* Category Filter Pills */}
-            <div className="flex bg-dark-800 p-1 rounded-xl border border-surface-border text-2xs">
+            <div className="flex bg-slate-200/70 p-1 rounded-xl border border-slate-200 text-2xs">
               {['all', 'normal', 'senior', 'disabled', 'pregnant'].map((cat) => (
                 <button
                   key={cat}
                   type="button"
                   onClick={() => setCategoryFilter(cat)}
                   className={[
-                    'px-2 py-1 rounded-lg font-medium capitalize transition-all',
-                    categoryFilter === cat ? 'bg-primary-600 text-white' : 'text-gray-400 hover:text-white',
+                    'px-2.5 py-1 rounded-lg font-bold capitalize transition-all',
+                    categoryFilter === cat ? 'bg-white text-primary-800 shadow-2xs' : 'text-slate-600 hover:text-slate-900',
                   ].join(' ')}
                 >
                   {cat}
@@ -394,11 +393,11 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Table Container */}
-        <div className="glass-card overflow-hidden border border-surface-border">
+        <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-surface-border bg-dark-800/90 text-2xs uppercase tracking-wider text-gray-400 font-semibold">
+                <tr className="border-b border-slate-200 bg-slate-50 text-2xs uppercase tracking-wider text-slate-500 font-bold">
                   <th className="py-3 px-4">Pos</th>
                   <th className="py-3 px-4">Token</th>
                   <th className="py-3 px-4">Visitor</th>
@@ -407,23 +406,23 @@ export default function AdminDashboardPage() {
                   <th className="py-3 px-4 text-right">Queue Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-surface-border/50">
+              <tbody className="divide-y divide-slate-100">
                 {filteredTokens.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="py-8 text-center text-xs text-gray-400">
+                    <td colSpan={6} className="py-8 text-center text-xs text-slate-500">
                       No matching tokens found in the active queue.
                     </td>
                   </tr>
                 ) : (
                   filteredTokens.map((tok, idx) => (
-                    <tr key={tok.id} className="hover:bg-white/5 transition-colors">
-                      <td className="py-3 px-4 font-mono text-xs text-gray-400">
+                    <tr key={tok.id} className="hover:bg-slate-50 transition-colors">
+                      <td className="py-3 px-4 font-mono text-xs font-semibold text-slate-500">
                         #{tok.position || idx + 1}
                       </td>
-                      <td className="py-3 px-4 font-mono font-bold text-white">
+                      <td className="py-3 px-4 font-mono font-bold text-slate-900">
                         {tok.id}
                       </td>
-                      <td className="py-3 px-4 text-xs text-gray-300 font-medium">
+                      <td className="py-3 px-4 text-xs text-slate-700 font-semibold">
                         {tok.name}
                       </td>
                       <td className="py-3 px-4">
@@ -434,7 +433,7 @@ export default function AdminDashboardPage() {
                           size="sm"
                         />
                       </td>
-                      <td className="py-3 px-4 font-mono text-xs text-accent-400 font-semibold">
+                      <td className="py-3 px-4 font-mono text-xs text-accent-700 font-bold">
                         ~{tok.waitMin}m
                       </td>
                       <td className="py-3 px-4 text-right">
@@ -443,7 +442,7 @@ export default function AdminDashboardPage() {
                             type="button"
                             onClick={() => handleBoostPriority(tok.id)}
                             title="Boost to Front of Queue"
-                            className="px-2 py-1 rounded-lg bg-warning-500/15 hover:bg-warning-500/25 border border-warning-500/30 text-warning-300 text-2xs font-semibold transition"
+                            className="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 text-2xs font-bold transition shadow-2xs"
                           >
                             ⚡ Priority Boost
                           </button>
@@ -451,7 +450,7 @@ export default function AdminDashboardPage() {
                             type="button"
                             onClick={() => handleMarkServed(tok.id)}
                             title="Mark as Served"
-                            className="px-2 py-1 rounded-lg bg-success-500/15 hover:bg-success-500/25 border border-success-500/30 text-success-300 text-2xs font-semibold transition"
+                            className="px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800 text-2xs font-bold transition shadow-2xs"
                           >
                             ✓ Serve
                           </button>
@@ -459,7 +458,7 @@ export default function AdminDashboardPage() {
                             type="button"
                             onClick={() => handleCancelToken(tok.id)}
                             title="Cancel Token"
-                            className="px-2 py-1 rounded-lg bg-danger-500/15 hover:bg-danger-500/25 border border-danger-500/30 text-danger-300 text-2xs font-semibold transition"
+                            className="px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-2xs font-bold transition shadow-2xs"
                           >
                             ✕
                           </button>

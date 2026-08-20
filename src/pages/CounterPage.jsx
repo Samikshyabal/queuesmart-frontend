@@ -14,7 +14,6 @@ const COUNTER_OPTIONS = [
 ]
 
 export default function CounterPage() {
-
   // Desk State
   const [selectedCounterId, setSelectedCounterId] = useState('c1')
   const [counterStatus, setCounterStatus] = useState('Serving') // 'Available' | 'Serving' | 'On Break'
@@ -144,20 +143,20 @@ export default function CounterPage() {
   const currentCounter = COUNTER_OPTIONS.find((c) => c.id === selectedCounterId) || COUNTER_OPTIONS[0]
 
   return (
-    <main className="flex-1 flex flex-col page-section py-8 max-w-7xl w-full">
+    <main className="flex-1 flex flex-col page-section py-8 max-w-7xl w-full bg-slate-50">
       {/* ── 1. Counter Header & Desk Status Bar ─────────────────────────────── */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-surface-border">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-200">
         {/* Desk Info & Switcher */}
         <div className="flex flex-wrap items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-primary-600/20 border border-primary-500/30 flex items-center justify-center text-xl">
+          <div className="w-10 h-10 rounded-xl bg-primary-100 border border-primary-200 flex items-center justify-center text-xl shadow-2xs">
             🖥️
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-2xs font-bold text-primary-400 uppercase tracking-widest">
+              <span className="text-2xs font-bold text-primary-700 uppercase tracking-widest">
                 STAFF WORKSTATION
               </span>
-              <span className="text-2xs text-gray-500 font-mono">• Clerk: {currentCounter.clerk}</span>
+              <span className="text-2xs text-slate-500 font-mono font-medium">• Clerk: {currentCounter.clerk}</span>
             </div>
             {/* Counter Selector Dropdown */}
             <div className="flex items-center gap-2 mt-0.5">
@@ -167,10 +166,10 @@ export default function CounterPage() {
                   setSelectedCounterId(e.target.value)
                   showActionFeedback(`Switched to ${COUNTER_OPTIONS.find((c) => c.id === e.target.value)?.name}`)
                 }}
-                className="bg-dark-800 border border-surface-border rounded-lg text-sm font-bold text-white py-1 px-2.5 focus:outline-none focus:border-primary-500 cursor-pointer"
+                className="bg-white border border-slate-300 rounded-lg text-sm font-bold text-slate-900 py-1.5 px-3 focus:outline-none focus:border-primary-500 shadow-2xs cursor-pointer"
               >
                 {COUNTER_OPTIONS.map((opt) => (
-                  <option key={opt.id} value={opt.id} className="bg-dark-900 text-white">
+                  <option key={opt.id} value={opt.id} className="bg-white text-slate-900 font-medium">
                     {opt.name}
                   </option>
                 ))}
@@ -182,16 +181,16 @@ export default function CounterPage() {
         {/* Status Control Buttons & Session Summary */}
         <div className="flex items-center gap-3">
           {/* Status Selector Pill */}
-          <div className="flex bg-dark-800 p-1 rounded-xl border border-surface-border text-xs">
+          <div className="flex bg-slate-200/70 p-1 rounded-xl border border-slate-200 text-xs">
             <button
               type="button"
               onClick={() => { setCounterStatus('Serving'); showActionFeedback('Desk marked as Serving / Busy') }}
               className={[
-                'px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1.5',
-                counterStatus === 'Serving' ? 'bg-primary-600 text-white shadow' : 'text-gray-400 hover:text-white',
+                'px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5',
+                counterStatus === 'Serving' ? 'bg-white text-primary-800 shadow-2xs' : 'text-slate-600 hover:text-slate-900',
               ].join(' ')}
             >
-              <span className="w-2 h-2 rounded-full bg-accent-400 animate-ping" />
+              <span className="w-2 h-2 rounded-full bg-accent-500 animate-ping" />
               Serving
             </button>
 
@@ -199,11 +198,11 @@ export default function CounterPage() {
               type="button"
               onClick={() => { setCounterStatus('Available'); showActionFeedback('Desk marked as Available / Ready') }}
               className={[
-                'px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1.5',
-                counterStatus === 'Available' ? 'bg-success-600 text-white shadow' : 'text-gray-400 hover:text-white',
+                'px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5',
+                counterStatus === 'Available' ? 'bg-white text-emerald-800 shadow-2xs' : 'text-slate-600 hover:text-slate-900',
               ].join(' ')}
             >
-              <span className="w-2 h-2 rounded-full bg-white" />
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
               Available
             </button>
 
@@ -211,8 +210,8 @@ export default function CounterPage() {
               type="button"
               onClick={() => { setCounterStatus('On Break'); showActionFeedback('Desk marked as On Break') }}
               className={[
-                'px-3 py-1.5 rounded-lg font-semibold transition-all flex items-center gap-1.5',
-                counterStatus === 'On Break' ? 'bg-warning-600 text-white shadow' : 'text-gray-400 hover:text-white',
+                'px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5',
+                counterStatus === 'On Break' ? 'bg-white text-amber-800 shadow-2xs' : 'text-slate-600 hover:text-slate-900',
               ].join(' ')}
             >
               <span>☕</span> Break
@@ -220,7 +219,7 @@ export default function CounterPage() {
           </div>
 
           <Link to="/admin">
-            <Button variant="ghost" size="sm" className="text-xs border border-surface-border">
+            <Button variant="ghost" size="sm" className="text-xs border border-slate-200 bg-white">
               Admin View →
             </Button>
           </Link>
@@ -229,12 +228,12 @@ export default function CounterPage() {
 
       {/* Action Toast Notification */}
       {actionAlert && (
-        <div className="mb-6 p-3 rounded-xl bg-primary-600/20 border border-primary-500/40 text-primary-200 text-xs flex items-center justify-between animate-fade-in shadow-glow-primary">
+        <div className="mb-6 p-3.5 rounded-xl bg-primary-50 border border-primary-200 text-primary-900 text-xs flex items-center justify-between animate-fade-in shadow-sm font-medium">
           <div className="flex items-center gap-2">
             <span>📢</span>
             <span>{actionAlert}</span>
           </div>
-          <button onClick={() => setActionAlert('')} className="text-primary-300 hover:text-white text-xs font-bold">
+          <button onClick={() => setActionAlert('')} className="text-primary-700 hover:text-primary-900 text-xs font-bold p-1">
             ✕
           </button>
         </div>
@@ -242,36 +241,36 @@ export default function CounterPage() {
 
       {/* ── 2. Desk Session Metrics Bar ────────────────────────────────────── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-        <div className="glass-card p-3.5 flex items-center justify-between">
+        <div className="bg-white rounded-2xl p-4 flex items-center justify-between border border-slate-200 shadow-2xs">
           <div>
-            <span className="text-2xs text-gray-400 uppercase tracking-wider block">Served at this Desk</span>
-            <span className="text-xl font-bold text-white">{deskServedCount} Visitors</span>
+            <span className="text-2xs text-slate-500 font-bold uppercase tracking-wider block">Served at this Desk</span>
+            <span className="text-xl font-black text-slate-900">{deskServedCount} Visitors</span>
           </div>
-          <span className="text-xl">🏆</span>
+          <span className="text-xl p-1.5 rounded-lg bg-slate-100">🏆</span>
         </div>
 
-        <div className="glass-card p-3.5 flex items-center justify-between">
+        <div className="bg-white rounded-2xl p-4 flex items-center justify-between border border-slate-200 shadow-2xs">
           <div>
-            <span className="text-2xs text-gray-400 uppercase tracking-wider block">Avg Handling Duration</span>
-            <span className="text-xl font-bold text-accent-400">3.8 mins</span>
+            <span className="text-2xs text-slate-500 font-bold uppercase tracking-wider block">Avg Handling Duration</span>
+            <span className="text-xl font-black text-accent-700">3.8 mins</span>
           </div>
-          <span className="text-xl">⏱️</span>
+          <span className="text-xl p-1.5 rounded-lg bg-slate-100">⏱️</span>
         </div>
 
-        <div className="glass-card p-3.5 flex items-center justify-between">
+        <div className="bg-white rounded-2xl p-4 flex items-center justify-between border border-slate-200 shadow-2xs">
           <div>
-            <span className="text-2xs text-gray-400 uppercase tracking-wider block">Waiting for this Desk</span>
-            <span className="text-xl font-bold text-warning-400">{deskQueue.length} In Line</span>
+            <span className="text-2xs text-slate-500 font-bold uppercase tracking-wider block">Waiting for this Desk</span>
+            <span className="text-xl font-black text-amber-800">{deskQueue.length} In Line</span>
           </div>
-          <span className="text-xl">👥</span>
+          <span className="text-xl p-1.5 rounded-lg bg-slate-100">👥</span>
         </div>
 
-        <div className="glass-card p-3.5 flex items-center justify-between">
+        <div className="bg-white rounded-2xl p-4 flex items-center justify-between border border-slate-200 shadow-2xs">
           <div>
-            <span className="text-2xs text-gray-400 uppercase tracking-wider block">Current Status</span>
-            <span className="text-sm font-bold text-success-400 uppercase tracking-wider">{counterStatus}</span>
+            <span className="text-2xs text-slate-500 font-bold uppercase tracking-wider block">Current Status</span>
+            <span className="text-sm font-bold text-emerald-700 uppercase tracking-wider">{counterStatus}</span>
           </div>
-          <span className="text-xl">🟢</span>
+          <span className="text-xl p-1.5 rounded-lg bg-slate-100">🟢</span>
         </div>
       </div>
 
@@ -279,23 +278,23 @@ export default function CounterPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left 2 Columns: Currently Serving Hero Action Panel */}
         <div className="lg:col-span-2 space-y-6">
-          <Card className="p-6 sm:p-8 bg-dark-800/90 border-2 border-primary-500/40 relative overflow-hidden shadow-2xl">
+          <Card className="p-6 sm:p-8 bg-white border border-slate-200 shadow-card-elevated relative overflow-hidden">
             {/* Header / Active Indicator */}
-            <div className="flex items-center justify-between border-b border-surface-border pb-4 mb-6">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
               <div className="flex items-center gap-2.5">
                 <span className="relative flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-success-400" />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-600" />
                 </span>
-                <span className="text-xs font-bold text-white uppercase tracking-wider">
+                <span className="text-xs font-bold text-slate-900 uppercase tracking-wider">
                   Currently at Desk
                 </span>
               </div>
 
               {/* Service Handling Duration Timer */}
-              <div className="flex items-center gap-2 bg-dark-900 border border-surface-border px-3 py-1 rounded-xl">
-                <span className="text-2xs text-gray-400 font-medium">Handling Duration:</span>
-                <span className="font-mono text-sm font-bold text-accent-400">
+              <div className="flex items-center gap-2 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-xl">
+                <span className="text-2xs text-slate-500 font-bold uppercase">Handling Duration:</span>
+                <span className="font-mono text-sm font-black text-primary-700">
                   {formatTimer(elapsedSeconds)}
                 </span>
               </div>
@@ -304,21 +303,21 @@ export default function CounterPage() {
             {/* Currently Serving Hero Area */}
             {activeToken ? (
               <div className="space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-dark-900/80 border border-surface-border">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-200">
                   {/* Big Token Display */}
                   <div>
-                    <span className="text-2xs font-semibold text-gray-400 uppercase tracking-widest block mb-0.5">
+                    <span className="text-2xs font-bold text-slate-500 uppercase tracking-widest block mb-0.5">
                       Active Customer Ticket
                     </span>
-                    <div className="text-5xl font-black text-white gradient-text tracking-tight animate-number-pop">
+                    <div className="text-5xl font-black text-primary-700 tracking-tight animate-number-pop">
                       {activeToken.id}
                     </div>
                   </div>
 
                   {/* Customer Details & Priority */}
                   <div className="sm:text-right space-y-1">
-                    <h3 className="text-lg font-bold text-white">{activeToken.name}</h3>
-                    <p className="text-xs font-mono text-gray-400">{activeToken.phone}</p>
+                    <h3 className="text-lg font-bold text-slate-900">{activeToken.name}</h3>
+                    <p className="text-xs font-mono text-slate-500">{activeToken.phone}</p>
                     <div className="sm:justify-end flex">
                       <Badge
                         variant={activeToken.category}
@@ -332,23 +331,23 @@ export default function CounterPage() {
 
                 {/* Additional Ticket Metadata */}
                 <div className="grid grid-cols-3 gap-3 text-center text-xs">
-                  <div className="bg-dark-700/60 rounded-xl p-2.5 border border-surface-border">
-                    <span className="text-2xs text-gray-400 block">Service Requested</span>
-                    <span className="font-semibold text-white truncate block">{activeToken.service}</span>
+                  <div className="bg-slate-50 rounded-xl p-3 border border-slate-200">
+                    <span className="text-2xs text-slate-500 font-medium block">Service Requested</span>
+                    <span className="font-bold text-slate-900 truncate block mt-0.5">{activeToken.service}</span>
                   </div>
-                  <div className="bg-dark-700/60 rounded-xl p-2.5 border border-surface-border">
-                    <span className="text-2xs text-gray-400 block">Check-in Time</span>
-                    <span className="font-mono font-semibold text-white">{activeToken.checkedInAt}</span>
+                  <div className="bg-slate-50 rounded-xl p-3 border border-slate-200">
+                    <span className="text-2xs text-slate-500 font-medium block">Check-in Time</span>
+                    <span className="font-mono font-bold text-slate-900 mt-0.5 block">{activeToken.checkedInAt}</span>
                   </div>
-                  <div className="bg-dark-700/60 rounded-xl p-2.5 border border-surface-border">
-                    <span className="text-2xs text-gray-400 block">Prior Wait Time</span>
-                    <span className="font-semibold text-accent-400">~{activeToken.waitedMinutes} mins</span>
+                  <div className="bg-slate-50 rounded-xl p-3 border border-slate-200">
+                    <span className="text-2xs text-slate-500 font-medium block">Prior Wait Time</span>
+                    <span className="font-bold text-accent-700 mt-0.5 block">~{activeToken.waitedMinutes} mins</span>
                   </div>
                 </div>
 
                 {/* ── Clerk Service Notes / Remarks ────────────────────────── */}
                 <div>
-                  <label htmlFor="service-notes" className="block text-xs font-semibold text-gray-300 mb-1.5">
+                  <label htmlFor="service-notes" className="block text-xs font-semibold text-slate-700 mb-1.5">
                     Clerk Remarks &amp; Resolution Notes
                   </label>
                   <textarea
@@ -366,7 +365,7 @@ export default function CounterPage() {
                         key={chip}
                         type="button"
                         onClick={() => setServiceNotes((prev) => (prev ? `${prev}, ${chip}` : chip))}
-                        className="text-2xs px-2 py-0.5 rounded-md bg-dark-700 hover:bg-dark-600 text-gray-300 border border-surface-border transition"
+                        className="text-2xs px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 font-medium transition shadow-2xs"
                       >
                         + {chip}
                       </button>
@@ -375,13 +374,13 @@ export default function CounterPage() {
                 </div>
 
                 {/* ── Workflow Action Buttons ──────────────────────────────── */}
-                <div className="pt-2 border-t border-surface-border space-y-3">
+                <div className="pt-2 border-t border-slate-200 space-y-3">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <Button
                       variant="success"
                       size="lg"
                       onClick={handleComplete}
-                      className="font-bold shadow-glow-success"
+                      className="font-bold shadow-md"
                     >
                       ✓ Mark Completed &amp; Next
                     </Button>
@@ -390,7 +389,7 @@ export default function CounterPage() {
                       variant="primary"
                       size="lg"
                       onClick={handleCallNext}
-                      className="font-bold"
+                      className="font-bold shadow-md"
                     >
                       📢 Call Next Token →
                     </Button>
@@ -429,8 +428,8 @@ export default function CounterPage() {
               <div className="py-12 text-center space-y-4">
                 <div className="text-5xl">🪑</div>
                 <div>
-                  <h3 className="text-lg font-bold text-white">Counter is Currently Idle</h3>
-                  <p className="text-xs text-gray-400 max-w-sm mx-auto mt-1">
+                  <h3 className="text-lg font-bold text-slate-900">Counter is Currently Idle</h3>
+                  <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1">
                     There is currently no active visitor being served at {currentCounter.name}. Click below to summon the next in line.
                   </p>
                 </div>
@@ -450,40 +449,40 @@ export default function CounterPage() {
         {/* Right Column: Upcoming Queue for this Counter */}
         <div className="lg:col-span-1 space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
               <span>👥</span> Desk Queue ({deskQueue.length})
             </h3>
-            <span className="text-2xs text-gray-400 font-mono">Real-time line</span>
+            <span className="text-2xs text-slate-500 font-mono font-medium">Real-time line</span>
           </div>
 
-          <div className="glass-card p-3 space-y-2 max-h-[580px] overflow-y-auto">
+          <div className="bg-white rounded-2xl border border-slate-200 p-3 space-y-2 max-h-[580px] overflow-y-auto shadow-xs">
             {deskQueue.length === 0 ? (
-              <div className="py-8 text-center text-xs text-gray-400">
+              <div className="py-8 text-center text-xs text-slate-500">
                 Queue is clear! No more waiting visitors.
               </div>
             ) : (
               deskQueue.map((tok, idx) => (
                 <div
                   key={tok.id}
-                  className="p-3 rounded-xl bg-dark-800/80 border border-surface-border hover:border-gray-600 transition-all flex items-center justify-between gap-2"
+                  className="p-3 rounded-xl bg-slate-50 border border-slate-200 hover:border-slate-300 transition-all flex items-center justify-between gap-2"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <span className="text-2xs font-mono font-bold text-gray-400 bg-dark-700 w-5 h-5 rounded-full flex items-center justify-center shrink-0">
+                    <span className="text-2xs font-mono font-bold text-slate-600 bg-white border border-slate-200 w-5 h-5 rounded-full flex items-center justify-center shrink-0 shadow-2xs">
                       {idx + 1}
                     </span>
                     <div className="min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <span className="font-mono font-bold text-white text-xs">{tok.id}</span>
+                        <span className="font-mono font-bold text-slate-900 text-xs">{tok.id}</span>
                         <Badge variant={tok.category} label={CATEGORY_CONFIG[tok.category]?.label || 'Normal'} size="sm" />
                       </div>
-                      <p className="text-2xs text-gray-300 truncate mt-0.5">{tok.name}</p>
+                      <p className="text-2xs text-slate-600 font-medium truncate mt-0.5">{tok.name}</p>
                     </div>
                   </div>
 
                   <button
                     type="button"
                     onClick={() => handleCallSpecific(tok)}
-                    className="px-2 py-1 rounded-lg bg-primary-600/20 hover:bg-primary-600 text-primary-300 hover:text-white text-2xs font-bold border border-primary-500/30 transition shrink-0"
+                    className="px-2.5 py-1 rounded-lg bg-primary-50 hover:bg-primary-100 text-primary-800 text-2xs font-bold border border-primary-200 transition shadow-2xs shrink-0"
                     title="Directly summon this token"
                   >
                     Call
@@ -497,13 +496,13 @@ export default function CounterPage() {
 
       {/* ── Transfer Token Modal ───────────────────────────────────────────── */}
       {transferModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
-          <div className="bg-dark-800 border border-surface-border rounded-2xl p-6 max-w-sm w-full shadow-2xl animate-scale-in">
-            <h3 className="text-base font-bold text-white mb-2 flex items-center gap-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs animate-fade-in">
+          <div className="bg-white border border-slate-200 rounded-3xl p-6 max-w-sm w-full shadow-2xl animate-scale-in">
+            <h3 className="text-base font-bold text-slate-900 mb-2 flex items-center gap-2">
               <span>↗️</span> Transfer Active Token
             </h3>
-            <p className="text-xs text-gray-400 mb-4">
-              Select destination counter desk to redirect Token <strong className="text-white font-mono">{activeToken?.id}</strong>.
+            <p className="text-xs text-slate-600 mb-4">
+              Select destination counter desk to redirect Token <strong className="text-slate-900 font-mono">{activeToken?.id}</strong>.
             </p>
 
             <div className="space-y-2 mb-5">
@@ -513,8 +512,8 @@ export default function CounterPage() {
                   className={[
                     'flex items-center justify-between p-3 rounded-xl border text-xs cursor-pointer transition',
                     transferTarget === c.id
-                      ? 'bg-primary-600/20 border-primary-500 text-white'
-                      : 'bg-dark-700/60 border-surface-border text-gray-300 hover:border-gray-500',
+                      ? 'bg-primary-50 border-primary-500 text-primary-900'
+                      : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-slate-300',
                   ].join(' ')}
                 >
                   <div className="flex items-center gap-2">
@@ -527,7 +526,7 @@ export default function CounterPage() {
                     />
                     <span className="font-semibold">{c.name}</span>
                   </div>
-                  <span className="text-2xs text-gray-500 font-mono">{c.clerk}</span>
+                  <span className="text-2xs text-slate-500 font-mono">{c.clerk}</span>
                 </label>
               ))}
             </div>
@@ -544,7 +543,7 @@ export default function CounterPage() {
               <Button
                 variant="primary"
                 size="sm"
-                className="flex-1"
+                className="flex-1 font-bold"
                 onClick={handleTransfer}
               >
                 Confirm Transfer

@@ -123,23 +123,23 @@ export default function QueueDisplayPage() {
   }
 
   return (
-    <main className="flex-1 flex flex-col page-section py-8 max-w-7xl w-full">
+    <main className="flex-1 flex flex-col page-section py-8 max-w-7xl w-full bg-slate-50">
       {/* ── 1. Top Screen Banner & Controls ─────────────────────────────────── */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-4 border-b border-surface-border">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-4 border-b border-slate-200">
         <div>
           <div className="flex items-center gap-3">
             <span className="live-indicator">
               <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent-400" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-500 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent-600" />
               </span>
               LIVE PUBLIC QUEUE BOARD
             </span>
-            <span className="text-2xs text-gray-500 font-mono">
+            <span className="text-2xs text-slate-500 font-mono font-medium">
               Last update: {lastUpdated.toLocaleTimeString()}
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
             Now Serving &amp; Queue Status
           </h1>
         </div>
@@ -152,7 +152,7 @@ export default function QueueDisplayPage() {
             onClick={() => setIsSimulating(!isSimulating)}
             className="text-xs"
           >
-            <span className={['w-2 h-2 rounded-full', isSimulating ? 'bg-white animate-pulse' : 'bg-gray-400'].join(' ')} />
+            <span className={['w-2 h-2 rounded-full', isSimulating ? 'bg-white animate-pulse' : 'bg-slate-400'].join(' ')} />
             {isSimulating ? 'Simulation: Active' : 'Start Auto-Simulation'}
           </Button>
 
@@ -160,7 +160,7 @@ export default function QueueDisplayPage() {
             variant="ghost"
             size="sm"
             onClick={handleSimulateNext}
-            className="text-xs border border-surface-border"
+            className="text-xs border border-slate-200 bg-white"
             title="Advance next person in line"
           >
             Next Token →
@@ -176,49 +176,49 @@ export default function QueueDisplayPage() {
 
       {/* ── 2. Live Overview Stats Strip ────────────────────────────────────── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="glass-card p-4 flex items-center gap-3 border-l-4 border-primary-500">
-          <span className="text-2xl p-2 rounded-xl bg-dark-700">👥</span>
+        <div className="bg-white rounded-2xl p-4.5 flex items-center gap-3.5 border border-slate-200 border-l-4 border-l-primary-600 shadow-xs">
+          <span className="text-2xl p-2 rounded-xl bg-slate-100">👥</span>
           <div>
-            <span className="text-2xs font-semibold text-gray-400 uppercase tracking-wider block">
+            <span className="text-2xs font-bold text-slate-500 uppercase tracking-wider block">
               Waiting in Queue
             </span>
-            <span className="text-xl sm:text-2xl font-black text-white">
+            <span className="text-xl sm:text-2xl font-black text-slate-900">
               {totalWaiting} People
             </span>
           </div>
         </div>
 
-        <div className="glass-card p-4 flex items-center gap-3 border-l-4 border-accent-400">
-          <span className="text-2xl p-2 rounded-xl bg-dark-700">⏱️</span>
+        <div className="bg-white rounded-2xl p-4.5 flex items-center gap-3.5 border border-slate-200 border-l-4 border-l-accent-600 shadow-xs">
+          <span className="text-2xl p-2 rounded-xl bg-slate-100">⏱️</span>
           <div>
-            <span className="text-2xs font-semibold text-gray-400 uppercase tracking-wider block">
+            <span className="text-2xs font-bold text-slate-500 uppercase tracking-wider block">
               Average Wait Time
             </span>
-            <span className="text-xl sm:text-2xl font-black text-accent-400">
+            <span className="text-xl sm:text-2xl font-black text-accent-700">
               ~{MOCK_QUEUE_STATUS.avgWaitMinutes} Mins
             </span>
           </div>
         </div>
 
-        <div className="glass-card p-4 flex items-center gap-3 border-l-4 border-success-500">
-          <span className="text-2xl p-2 rounded-xl bg-dark-700">🏢</span>
+        <div className="bg-white rounded-2xl p-4.5 flex items-center gap-3.5 border border-slate-200 border-l-4 border-l-emerald-600 shadow-xs">
+          <span className="text-2xl p-2 rounded-xl bg-slate-100">🏢</span>
           <div>
-            <span className="text-2xs font-semibold text-gray-400 uppercase tracking-wider block">
+            <span className="text-2xs font-bold text-slate-500 uppercase tracking-wider block">
               Active Counters
             </span>
-            <span className="text-xl sm:text-2xl font-black text-success-400">
+            <span className="text-xl sm:text-2xl font-black text-emerald-700">
               {counters.length} Operational
             </span>
           </div>
         </div>
 
-        <div className="glass-card p-4 flex items-center gap-3 border-l-4 border-warning-500">
-          <span className="text-2xl p-2 rounded-xl bg-dark-700">✓</span>
+        <div className="bg-white rounded-2xl p-4.5 flex items-center gap-3.5 border border-slate-200 border-l-4 border-l-amber-600 shadow-xs">
+          <span className="text-2xl p-2 rounded-xl bg-slate-100">✓</span>
           <div>
-            <span className="text-2xs font-semibold text-gray-400 uppercase tracking-wider block">
+            <span className="text-2xs font-bold text-slate-500 uppercase tracking-wider block">
               Served Today
             </span>
-            <span className="text-xl sm:text-2xl font-black text-white">
+            <span className="text-xl sm:text-2xl font-black text-slate-900">
               {tokensServed}+
             </span>
           </div>
@@ -228,38 +228,37 @@ export default function QueueDisplayPage() {
       {/* ── 3. "Now Serving" Counter Cards (Hero Grid) ─────────────────────── */}
       <section className="mb-10">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-white flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-success-400 animate-ping" />
+          <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
             Active Serving Counters
           </h2>
-          <span className="text-xs text-gray-400">Please proceed when your token is shown</span>
+          <span className="text-xs font-medium text-slate-500">Please proceed to the counter when your token is shown</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {counters.map((ctr) => {
             const isCalling = ctr.status === 'Calling'
             return (
-              <Card
+              <div
                 key={ctr.id}
                 className={[
-                  'relative overflow-hidden transition-all duration-300',
+                  'rounded-2xl p-5 transition-all duration-300 border bg-white shadow-xs',
                   isCalling
-                    ? 'border-2 border-accent-400 shadow-glow-accent bg-dark-800'
-                    : 'border border-surface-border bg-dark-800/90',
+                    ? 'border-2 border-accent-600 shadow-glow-accent ring-2 ring-accent-500/20'
+                    : 'border-slate-200 hover:border-slate-300',
                 ].join(' ')}
-                padding="md"
               >
                 {/* Status Indicator Pill */}
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-bold text-primary-300 uppercase tracking-wider">
+                  <span className="text-xs font-bold text-primary-700 uppercase tracking-wider">
                     {ctr.name}
                   </span>
                   <span
                     className={[
                       'text-2xs px-2 py-0.5 rounded-full font-bold uppercase tracking-wider',
                       isCalling
-                        ? 'bg-accent-500/20 text-accent-300 border border-accent-500/40 animate-pulse'
-                        : 'bg-success-500/15 text-success-400 border border-success-500/30',
+                        ? 'bg-accent-100 text-accent-800 border border-accent-300 animate-pulse'
+                        : 'bg-emerald-50 text-emerald-800 border border-emerald-300',
                     ].join(' ')}
                   >
                     {ctr.status}
@@ -267,21 +266,21 @@ export default function QueueDisplayPage() {
                 </div>
 
                 {/* Big Token Number */}
-                <div className="text-center py-2">
-                  <span className="text-xs text-gray-400 uppercase tracking-widest block mb-1">
+                <div className="text-center py-3 bg-slate-50 rounded-xl border border-slate-200/80 mb-3">
+                  <span className="text-2xs font-bold text-slate-500 uppercase tracking-widest block mb-0.5">
                     Serving Token
                   </span>
-                  <div className="text-4xl sm:text-5xl font-black text-white tracking-tight animate-number-pop">
+                  <div className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight animate-number-pop">
                     {ctr.currentToken}
                   </div>
                 </div>
 
                 {/* Service Details Footer */}
-                <div className="mt-3 pt-3 border-t border-surface-border/80 flex items-center justify-between text-xs text-gray-400">
-                  <span className="truncate">{ctr.service}</span>
-                  <span className="text-gray-500 text-2xs">{ctr.staff}</span>
+                <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
+                  <span className="font-semibold truncate">{ctr.service}</span>
+                  <span className="text-slate-400 text-2xs font-medium">{ctr.staff}</span>
                 </div>
-              </Card>
+              </div>
             )
           })}
         </div>
@@ -291,11 +290,11 @@ export default function QueueDisplayPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Personal Token Search & Tracker */}
         <div className="lg:col-span-1 space-y-6">
-          <Card className="p-6">
-            <h3 className="text-base font-bold text-white mb-2 flex items-center gap-2">
+          <Card className="p-6 border border-slate-200">
+            <h3 className="text-base font-bold text-slate-900 mb-1.5 flex items-center gap-2">
               <span>🔍</span> Track Your Token
             </h3>
-            <p className="text-xs text-gray-400 mb-4">
+            <p className="text-xs text-slate-600 mb-4">
               Enter the token number from your ticket to check your exact position and estimated wait.
             </p>
 
@@ -306,7 +305,7 @@ export default function QueueDisplayPage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="e.g. T045, A-102"
-                  className="input-field uppercase font-mono tracking-wider text-sm pr-20"
+                  className="input-field uppercase font-mono font-bold tracking-wider text-sm pr-20"
                 />
                 <Button
                   type="submit"
@@ -324,20 +323,20 @@ export default function QueueDisplayPage() {
               <div className="mt-5 animate-scale-in">
                 {searchResult.found ? (
                   searchResult.isServingNow ? (
-                    <div className="p-4 rounded-xl bg-success-500/15 border border-success-500/40 text-center">
+                    <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-center">
                       <span className="text-2xl block mb-1">🎉</span>
-                      <h4 className="font-bold text-success-400 text-sm">
+                      <h4 className="font-bold text-emerald-800 text-sm">
                         It's Your Turn Now!
                       </h4>
-                      <p className="text-xs text-gray-300 mt-1">
-                        Token <strong className="text-white font-mono">{searchResult.token}</strong> is currently being served at{' '}
-                        <strong className="text-white">{searchResult.counter}</strong> ({searchResult.service}).
+                      <p className="text-xs text-slate-700 mt-1">
+                        Token <strong className="text-slate-900 font-mono">{searchResult.token}</strong> is currently being served at{' '}
+                        <strong className="text-slate-900">{searchResult.counter}</strong> ({searchResult.service}).
                       </p>
                     </div>
                   ) : (
-                    <div className="p-4 rounded-xl bg-primary-600/15 border border-primary-500/40 space-y-2">
-                      <div className="flex items-center justify-between border-b border-primary-500/30 pb-2">
-                        <span className="text-xs font-bold text-primary-300 font-mono text-base">
+                    <div className="p-4 rounded-xl bg-primary-50 border border-primary-200 space-y-2">
+                      <div className="flex items-center justify-between border-b border-primary-200 pb-2">
+                        <span className="text-sm font-bold text-primary-800 font-mono">
                           {searchResult.token}
                         </span>
                         <Badge
@@ -347,46 +346,46 @@ export default function QueueDisplayPage() {
                         />
                       </div>
                       <div className="grid grid-cols-2 gap-2 text-center pt-1">
-                        <div className="bg-dark-900/60 rounded-lg p-2">
-                          <span className="text-2xs text-gray-400 block">Queue Position</span>
-                          <span className="text-sm font-bold text-white">#{searchResult.position} in line</span>
+                        <div className="bg-white rounded-lg p-2 border border-primary-100">
+                          <span className="text-2xs font-semibold text-slate-500 block">Queue Position</span>
+                          <span className="text-sm font-bold text-slate-900">#{searchResult.position} in line</span>
                         </div>
-                        <div className="bg-dark-900/60 rounded-lg p-2">
-                          <span className="text-2xs text-gray-400 block">Est. Remaining</span>
-                          <span className="text-sm font-bold text-accent-400">~{searchResult.waitMin} mins</span>
+                        <div className="bg-white rounded-lg p-2 border border-primary-100">
+                          <span className="text-2xs font-semibold text-slate-500 block">Est. Remaining</span>
+                          <span className="text-sm font-bold text-accent-700">~{searchResult.waitMin} mins</span>
                         </div>
                       </div>
-                      <p className="text-2xs text-gray-400 text-center pt-1">
+                      <p className="text-2xs text-slate-500 text-center pt-1 font-medium">
                         Please stay nearby. We will notify you when you are up next.
                       </p>
                     </div>
                   )
                 ) : (
-                  <div className="p-4 rounded-xl bg-dark-700/60 border border-surface-border text-center text-xs text-gray-400">
-                    Token <strong className="text-white font-mono">{searchResult.token}</strong> was not found in the active queue. Please verify the number or request a new token.
+                  <div className="p-4 rounded-xl bg-slate-100 border border-slate-200 text-center text-xs text-slate-600">
+                    Token <strong className="text-slate-900 font-mono">{searchResult.token}</strong> was not found in the active queue. Please check the number or take a new token.
                   </div>
                 )}
               </div>
             )}
           </Card>
 
-          {/* Service Instructions / Fast Tips */}
-          <div className="glass-card p-5 space-y-3 text-xs text-gray-400">
-            <h4 className="font-semibold text-white text-xs uppercase tracking-wider">
+          {/* Service Instructions */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-3 text-xs text-slate-600 shadow-xs">
+            <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider">
               Service Desk Guidelines
             </h4>
             <ul className="space-y-2">
               <li className="flex items-start gap-2">
-                <span className="text-primary-400 font-bold">•</span>
+                <span className="text-primary-600 font-bold">•</span>
                 <span>Keep original identification and supporting documents ready before approaching the desk.</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-primary-400 font-bold">•</span>
-                <span>Special assistance is available at the Priority Desk for seniors &amp; expectant mothers.</span>
+                <span className="text-primary-600 font-bold">•</span>
+                <span>Priority service is dedicated at Counter 4 for senior citizens &amp; expectant mothers.</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-primary-400 font-bold">•</span>
-                <span>Missed calls can be restored by presenting your ticket to any active counter clerk.</span>
+                <span className="text-primary-600 font-bold">•</span>
+                <span>Missed tokens can be re-queued by presenting your ticket to any available clerk.</span>
               </li>
             </ul>
           </div>
@@ -395,19 +394,19 @@ export default function QueueDisplayPage() {
         {/* Right Column: Upcoming Queue Table */}
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
+            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
               <span>📋</span> Next in Line (Upcoming Tokens)
             </h3>
-            <span className="text-xs text-gray-400 font-mono">
+            <span className="text-xs font-semibold text-slate-500 font-mono">
               Showing top {queueList.length} waiting
             </span>
           </div>
 
-          <div className="glass-card overflow-hidden border border-surface-border">
+          <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-xs">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm">
                 <thead>
-                  <tr className="border-b border-surface-border bg-dark-800/80 text-2xs uppercase tracking-wider text-gray-400">
+                  <tr className="border-b border-slate-200 bg-slate-50 text-2xs uppercase tracking-wider text-slate-500 font-bold">
                     <th className="py-3 px-4">Pos</th>
                     <th className="py-3 px-4">Token ID</th>
                     <th className="py-3 px-4">Visitor</th>
@@ -415,7 +414,7 @@ export default function QueueDisplayPage() {
                     <th className="py-3 px-4 text-right">Est. Wait</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-surface-border/50">
+                <tbody className="divide-y divide-slate-100">
                   {queueList.map((token, index) => {
                     const isSearched = searchResult?.found && searchResult.token === token.id
                     return (
@@ -424,19 +423,19 @@ export default function QueueDisplayPage() {
                         className={[
                           'transition-colors duration-150',
                           isSearched
-                            ? 'bg-primary-600/25 font-semibold text-white'
+                            ? 'bg-primary-50 font-semibold text-primary-900'
                             : index % 2 === 0
-                            ? 'bg-transparent hover:bg-white/5'
-                            : 'bg-dark-800/30 hover:bg-white/5',
+                            ? 'bg-white hover:bg-slate-50'
+                            : 'bg-slate-50/50 hover:bg-slate-50',
                         ].join(' ')}
                       >
-                        <td className="py-3 px-4 text-xs font-mono text-gray-400">
+                        <td className="py-3 px-4 text-xs font-mono font-semibold text-slate-500">
                           #{index + 1}
                         </td>
-                        <td className="py-3 px-4 font-mono font-bold text-white">
+                        <td className="py-3 px-4 font-mono font-bold text-slate-900">
                           {token.id}
                         </td>
-                        <td className="py-3 px-4 text-xs text-gray-300">
+                        <td className="py-3 px-4 text-xs font-medium text-slate-700">
                           {token.name}
                         </td>
                         <td className="py-3 px-4">
@@ -447,7 +446,7 @@ export default function QueueDisplayPage() {
                             size="sm"
                           />
                         </td>
-                        <td className="py-3 px-4 text-right font-mono text-xs text-accent-400 font-medium">
+                        <td className="py-3 px-4 text-right font-mono text-xs text-accent-700 font-bold">
                           ~{token.waitMin}m
                         </td>
                       </tr>

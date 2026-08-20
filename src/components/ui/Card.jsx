@@ -1,11 +1,5 @@
 /**
- * Card — glass-style container card used across all pages
- *
- * Props:
- *   padding  : 'none' | 'sm' | 'md' | 'lg'  (default: 'md')
- *   hover    : boolean — adds a lift + shadow effect on hover
- *   className: extra Tailwind classes
- *   children : card content
+ * Card — clean container card used across all pages (Light Theme)
  */
 
 const PADDING = {
@@ -25,12 +19,10 @@ export default function Card({
   return (
     <div
       className={[
-        // Base glass card style (defined in index.css)
-        'glass-card shadow-card',
+        'bg-white border border-slate-200/90 rounded-2xl shadow-card',
         PADDING[padding] ?? PADDING.md,
-        // Optional hover lift
         hover
-          ? 'transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover hover:border-primary-500/30'
+          ? 'transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover hover:border-slate-300'
           : '',
         className,
       ]

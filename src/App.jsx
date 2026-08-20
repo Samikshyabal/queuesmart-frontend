@@ -16,8 +16,6 @@ function ProtectedRoute({ isLoggedIn, children }) {
 
 // ── App root ──────────────────────────────────────────────────────────────────
 export default function App() {
-  // Simple login state — no context, no backend.
-  // handleLogin / handleLogout will be passed as props to the Login page + Navbar.
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const handleLogin  = () => setIsLoggedIn(true)
@@ -26,7 +24,7 @@ export default function App() {
   return (
     <BrowserRouter>
       {/* Outer shell — full height flex column so Navbar is always at the top */}
-      <div className="min-h-screen flex flex-col bg-dark-900">
+      <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800">
 
         {/* Navbar appears on every page */}
         <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
@@ -63,13 +61,13 @@ export default function App() {
               path="*"
               element={
                 <div className="flex-1 flex items-center justify-center p-8 animate-fade-in">
-                  <div className="text-center">
-                    <div className="text-8xl font-black bg-gradient-to-r from-primary-400 to-accent-400 bg-clip-text text-transparent mb-4">
+                  <div className="text-center bg-white p-8 sm:p-12 rounded-3xl border border-slate-200 shadow-card max-w-md w-full">
+                    <div className="text-7xl font-black bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent mb-3">
                       404
                     </div>
-                    <h1 className="text-xl font-semibold text-white mb-2">Page Not Found</h1>
-                    <p className="text-gray-400 mb-6 text-sm">The page you're looking for doesn't exist.</p>
-                    <a href="/" className="text-primary-400 hover:text-primary-300 text-sm underline underline-offset-2">
+                    <h1 className="text-xl font-bold text-slate-900 mb-2">Page Not Found</h1>
+                    <p className="text-slate-500 mb-6 text-sm">The page you're looking for doesn't exist or has been moved.</p>
+                    <a href="/" className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-primary-600 text-white font-semibold text-sm hover:bg-primary-700 transition shadow-sm">
                       Go to Home
                     </a>
                   </div>
