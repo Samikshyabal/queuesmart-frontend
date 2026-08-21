@@ -3,457 +3,580 @@ import { Link } from 'react-router-dom'
 import Card from '../components/ui/Card'
 import Badge from '../components/ui/Badge'
 import Button from '../components/ui/Button'
-import { CATEGORY_CONFIG, MOCK_TOKENS, MOCK_QUEUE_STATUS } from '../mockData'
+import { CATEGORY_CONFIG, MOCK_TOKENS, MOCK_QUEUE_STATUS, DEPT_WAIT_ESTIMATES } from '../mockData'
 
-// Initial Active Serving Counters Data
+// ── Counters configured with hospital departments & practitioners ────────────
 const INITIAL_COUNTERS = [
-  { id: 1, name: 'Counter 1', service: 'General Inquiries', currentToken: 'A-102', status: 'In Progress', staff: 'S. Mohapatra' },
-  { id: 2, name: 'Counter 2', service: 'Fee & Billing Desk', currentToken: 'B-108', status: 'Calling', staff: 'A. Jena' },
-  { id: 3, name: 'Counter 3', service: 'Doc Verification', currentToken: 'C-094', status: 'In Progress', staff: 'R. Tripathy' },
-  { id: 4, name: 'Priority Desk', service: 'Express Assistance', currentToken: 'P-031', status: 'Calling', staff: 'P. Behera' },
+  {
+    id: 1,
+    name:         'Registration Desk',
+    service:      'UHID & Check-in',
+    currentToken: 'REG-042',
+    status:       'In Progress',
+    staff:        DEPT_WAIT_ESTIMATES.registration.doctorName,
+    specialty:    DEPT_WAIT_ESTIMATES.registration.specialty,
+    avgConsultMin: 4,
+    deptId:       'registration',
+    room:         'Counter 01',
+  },
+  {
+    id: 2,
+    name:         'General OPD',
+    service:      'General Consultation',
+    currentToken: 'OPD-102',
+    status:       'In Progress',
+    staff:        DEPT_WAIT_ESTIMATES.opd.doctorName,
+    specialty:    DEPT_WAIT_ESTIMATES.opd.specialty,
+    avgConsultMin: 8,
+    deptId:       'opd',
+    room:         'Counter 02',
+  },
+  {
+    id: 3,
+    name:         'Cardiology OPD',
+    service:      'Heart & ECG Review',
+    currentToken: 'CARD-014',
+    status:       'Calling',
+    staff:        DEPT_WAIT_ESTIMATES.cardiology.doctorName,
+    specialty:    DEPT_WAIT_ESTIMATES.cardiology.specialty,
+    avgConsultMin: 12,
+    deptId:       'cardiology',
+    room:         'Room 104',
+  },
+  {
+    id: 4,
+    name:         'Orthopedics OPD',
+    service:      'Bone & Joint Care',
+    currentToken: 'ORTHO-027',
+    status:       'In Progress',
+    staff:        DEPT_WAIT_ESTIMATES.orthopedics.doctorName,
+    specialty:    DEPT_WAIT_ESTIMATES.orthopedics.specialty,
+    avgConsultMin: 10,
+    deptId:       'orthopedics',
+    room:         'Room 106',
+  },
+  {
+    id: 5,
+    name:         'Pediatrics OPD',
+    service:      'Child Healthcare',
+    currentToken: 'PED-019',
+    status:       'Calling',
+    staff:        DEPT_WAIT_ESTIMATES.pediatrics.doctorName,
+    specialty:    DEPT_WAIT_ESTIMATES.pediatrics.specialty,
+    avgConsultMin: 8,
+    deptId:       'pediatrics',
+    room:         'Room 108',
+  },
+  {
+    id: 6,
+    name:         'Pharmacy Dispensing',
+    service:      'Prescription Dispensing',
+    currentToken: 'PH-108',
+    status:       'In Progress',
+    staff:        DEPT_WAIT_ESTIMATES.pharmacy.doctorName,
+    specialty:    DEPT_WAIT_ESTIMATES.pharmacy.specialty,
+    avgConsultMin: 5,
+    deptId:       'pharmacy',
+    room:         'Counter 06',
+  },
 ]
 
+// ── Visual Token Progress Stepper ────────────────────────────────────────────
+// Checked In → In Queue → Being Called → Consulting
+const JOURNEY_STEPS = ['Checked In', 'In Queue', 'Being Called', 'Consulting']
+
+function TokenJourneyStepper({ currentStep }) {
+  const stepIndex =
+    currentStep === 'Consulting'   ? 3 :
+    currentStep === 'Being Called' ? 2 :
+    currentStep === 'In Queue'     ? 1 : 0
+
+  return (
+    <div className="mt-4 pt-3 border-t border-primary-100">
+      <p className="text-2xs font-bold uppercase tracking-wider text-primary-800 mb-2">
+        Patient Queue Stage
+      </p>
+      <div className="flex items-center justify-between relative">
+        {/* Connecting line */}
+        <div className="absolute left-3 right-3 top-3 -translate-y-1/2 h-0.5 bg-slate-200 z-0" />
+        <div
+          className="absolute left-3 top-3 -translate-y-1/2 h-0.5 bg-primary-500 transition-all duration-500 z-0"
+          style={{ width: `${(stepIndex / (JOURNEY_STEPS.length - 1)) * 88}%` }}
+        />
+
+        {JOURNEY_STEPS.map((step, idx) => {
+          const isDone    = idx < stepIndex
+          const isCurrent = idx === stepIndex
+          return (
+            <div key={step} className="flex flex-col items-center relative z-10">
+              <div
+                className={[
+                  'w-6 h-6 rounded-full flex items-center justify-center text-2xs font-bold transition-all',
+                  isDone
+                    ? 'bg-primary-600 text-white shadow-xs'
+                    : isCurrent
+                      ? 'bg-primary-600 text-white ring-4 ring-primary-100 shadow-sm animate-pulse'
+                      : 'bg-white border-2 border-slate-300 text-slate-400',
+                ].join(' ')}
+              >
+                {isDone ? '✓' : idx + 1}
+              </div>
+              <span
+                className={[
+                  'text-2xs font-semibold mt-1 whitespace-nowrap',
+                  isCurrent ? 'text-primary-800 font-bold' : isDone ? 'text-slate-700' : 'text-slate-400',
+                ].join(' ')}
+              >
+                {step}
+              </span>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 export default function QueueDisplayPage() {
-  // Live Simulation State
-  const [counters, setCounters] = useState(INITIAL_COUNTERS)
-  const [queueList, setQueueList] = useState(MOCK_TOKENS)
+  const [counters, setCounters]         = useState(INITIAL_COUNTERS)
+  const [queueList, setQueueList]       = useState(MOCK_TOKENS)
   const [totalWaiting, setTotalWaiting] = useState(MOCK_QUEUE_STATUS.totalInQueue)
   const [tokensServed, setTokensServed] = useState(MOCK_QUEUE_STATUS.tokensServedToday)
   const [isSimulating, setIsSimulating] = useState(false)
-  const [lastUpdated, setLastUpdated] = useState(new Date())
-
-  // Search / Personal Tracker State
-  const [searchQuery, setSearchQuery] = useState('')
+  const [lastUpdated, setLastUpdated]   = useState(new Date())
+  const [searchQuery, setSearchQuery]   = useState('')
   const [searchResult, setSearchResult] = useState(null)
 
-  // Advance queue simulation step
+  // Simulation handler
   const handleSimulateNext = () => {
     setQueueList((prevQueue) => {
       if (prevQueue.length === 0) return prevQueue
-
       const [nextToServe, ...remaining] = prevQueue
-
-      // Pick a random counter to update
       setCounters((prevCounters) => {
-        const randomCounterIndex = Math.floor(Math.random() * prevCounters.length)
-        return prevCounters.map((ctr, idx) => {
-          if (idx === randomCounterIndex) {
-            return {
-              ...ctr,
-              currentToken: nextToServe.id,
-              status: Math.random() > 0.5 ? 'Calling' : 'In Progress',
-            }
-          }
-          return ctr
-        })
+        const idx = Math.floor(Math.random() * prevCounters.length)
+        return prevCounters.map((ctr, i) =>
+          i === idx
+            ? { ...ctr, currentToken: nextToServe.id, status: Math.random() > 0.5 ? 'Calling' : 'In Progress' }
+            : ctr
+        )
       })
-
-      // Add a simulated new entry to the end of the queue occasionally
-      const newSimulatedToken = {
-        id: `T0${Math.floor(Math.random() * 50) + 51}`,
+      const sim = {
+        id: `OPD-${Math.floor(Math.random() * 900) + 100}`,
         name: ['Anita Dash', 'Sunil Roy', 'Prakash Rout', 'Geeta Sahu', 'Manoj Panda'][Math.floor(Math.random() * 5)],
         category: Math.random() < 0.25 ? 'senior' : Math.random() < 0.15 ? 'pregnant' : 'normal',
         position: remaining.length + 1,
         waitMin: (remaining.length + 1) * 3,
       }
-
-      setTokensServed((prev) => prev + 1)
+      setTokensServed((p) => p + 1)
       setTotalWaiting(remaining.length + 1)
       setLastUpdated(new Date())
-
-      return [...remaining, newSimulatedToken]
+      return [...remaining, sim]
     })
   }
 
-  // Simulation effect: automatically advance queue when isSimulating is active
   useEffect(() => {
     if (!isSimulating) return
-
-    const interval = setInterval(() => {
-      handleSimulateNext()
-    }, 4500)
-
-    return () => clearInterval(interval)
+    const id = setInterval(handleSimulateNext, 4500)
+    return () => clearInterval(id)
   }, [isSimulating])
 
-  // Handle Token Search
+  // Token Tracker Handler
   const handleSearch = (e) => {
     e.preventDefault()
-    const query = searchQuery.trim().toUpperCase()
-    if (!query) {
-      setSearchResult(null)
-      return
-    }
+    const q = searchQuery.trim().toUpperCase()
+    if (!q) { setSearchResult(null); return }
 
-    // Check currently serving
-    const activeServingMatch = counters.find((c) => c.currentToken.toUpperCase() === query)
-    if (activeServingMatch) {
+    const serving = counters.find((c) => c.currentToken.toUpperCase() === q)
+    if (serving) {
       setSearchResult({
         found: true,
         isServingNow: true,
-        token: query,
-        counter: activeServingMatch.name,
-        service: activeServingMatch.service,
-        status: activeServingMatch.status,
+        token: q,
+        counter: serving.name,
+        room: serving.room,
+        service: serving.service,
+        journeyStep: 'Consulting',
       })
       return
     }
 
-    // Check waiting queue
-    const queueIndex = queueList.findIndex((item) => item.id.toUpperCase() === query)
-    if (queueIndex !== -1) {
-      const match = queueList[queueIndex]
+    const qi = queueList.findIndex((t) => t.id.toUpperCase() === q)
+    if (qi !== -1) {
+      const m = queueList[qi]
+      const step = qi === 0 ? 'Being Called' : qi <= 2 ? 'In Queue' : 'Checked In'
       setSearchResult({
         found: true,
         isServingNow: false,
-        token: match.id,
-        name: match.name,
-        position: queueIndex + 1,
-        waitMin: match.waitMin,
-        category: match.category,
+        token: m.id,
+        name: m.name,
+        position: qi + 1,
+        waitMin: m.waitMin,
+        category: m.category,
+        journeyStep: step,
       })
       return
     }
 
-    // Not found
-    setSearchResult({
-      found: false,
-      token: query,
-    })
+    setSearchResult({ found: false, token: q })
+  }
+
+  // Calculate estimated call time from current time and waitMin
+  const now = new Date()
+  const getCallTime = (waitMin) => {
+    const t = new Date(now.getTime() + waitMin * 60000)
+    return t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   }
 
   return (
-    <main className="flex-1 flex flex-col page-section py-8 max-w-7xl w-full bg-slate-50">
-      {/* ── 1. Top Screen Banner & Controls ─────────────────────────────────── */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-4 border-b border-slate-200">
-        <div>
-          <div className="flex items-center gap-3">
-            <span className="live-indicator">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-500 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-accent-600" />
+    <main className="flex-1 bg-surface-soft">
+      {/* ── Header: Operational Status ─────────────────────────────────────── */}
+      <div className="bg-white border-b border-surface-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-0.5">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-success-500" />
               </span>
-              LIVE PUBLIC QUEUE BOARD
-            </span>
-            <span className="text-2xs text-slate-500 font-mono font-medium">
-              Last update: {lastUpdated.toLocaleTimeString()}
-            </span>
+              <span className="text-xs font-semibold text-success-700 uppercase tracking-wider">Live Queue Display</span>
+              <span className="text-2xs text-slate-400 font-mono">CityCare Hospital · {lastUpdated.toLocaleTimeString()}</span>
+            </div>
+            <h1 className="text-xl font-bold text-slate-900">Outpatient Department (OPD) Live Queue</h1>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
-            Now Serving &amp; Queue Status
-          </h1>
-        </div>
 
-        {/* Live Simulation Controls */}
-        <div className="flex items-center gap-3">
-          <Button
-            variant={isSimulating ? 'success' : 'secondary'}
-            size="sm"
-            onClick={() => setIsSimulating(!isSimulating)}
-            className="text-xs"
-          >
-            <span className={['w-2 h-2 rounded-full', isSimulating ? 'bg-white animate-pulse' : 'bg-slate-400'].join(' ')} />
-            {isSimulating ? 'Simulation: Active' : 'Start Auto-Simulation'}
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleSimulateNext}
-            className="text-xs border border-slate-200 bg-white"
-            title="Advance next person in line"
-          >
-            Next Token →
-          </Button>
-
-          <Link to="/token">
-            <Button variant="primary" size="sm" className="text-xs">
-              + Get Token
+          <div className="flex items-center gap-2.5">
+            <Button
+              variant={isSimulating ? 'success' : 'secondary'}
+              size="sm"
+              onClick={() => setIsSimulating(!isSimulating)}
+            >
+              <span className={`w-2 h-2 rounded-full ${isSimulating ? 'bg-white animate-pulse' : 'bg-slate-400'}`} />
+              {isSimulating ? 'Simulation Active' : 'Simulate Queue'}
             </Button>
-          </Link>
-        </div>
-      </div>
-
-      {/* ── 2. Live Overview Stats Strip ────────────────────────────────────── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white rounded-2xl p-4.5 flex items-center gap-3.5 border border-slate-200 border-l-4 border-l-primary-600 shadow-xs">
-          <span className="text-2xl p-2 rounded-xl bg-slate-100">👥</span>
-          <div>
-            <span className="text-2xs font-bold text-slate-500 uppercase tracking-wider block">
-              Waiting in Queue
-            </span>
-            <span className="text-xl sm:text-2xl font-black text-slate-900">
-              {totalWaiting} People
-            </span>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl p-4.5 flex items-center gap-3.5 border border-slate-200 border-l-4 border-l-accent-600 shadow-xs">
-          <span className="text-2xl p-2 rounded-xl bg-slate-100">⏱️</span>
-          <div>
-            <span className="text-2xs font-bold text-slate-500 uppercase tracking-wider block">
-              Average Wait Time
-            </span>
-            <span className="text-xl sm:text-2xl font-black text-accent-700">
-              ~{MOCK_QUEUE_STATUS.avgWaitMinutes} Mins
-            </span>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl p-4.5 flex items-center gap-3.5 border border-slate-200 border-l-4 border-l-emerald-600 shadow-xs">
-          <span className="text-2xl p-2 rounded-xl bg-slate-100">🏢</span>
-          <div>
-            <span className="text-2xs font-bold text-slate-500 uppercase tracking-wider block">
-              Active Counters
-            </span>
-            <span className="text-xl sm:text-2xl font-black text-emerald-700">
-              {counters.length} Operational
-            </span>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl p-4.5 flex items-center gap-3.5 border border-slate-200 border-l-4 border-l-amber-600 shadow-xs">
-          <span className="text-2xl p-2 rounded-xl bg-slate-100">✓</span>
-          <div>
-            <span className="text-2xs font-bold text-slate-500 uppercase tracking-wider block">
-              Served Today
-            </span>
-            <span className="text-xl sm:text-2xl font-black text-slate-900">
-              {tokensServed}+
-            </span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleSimulateNext}
+              className="border border-surface-border bg-white"
+            >
+              Advance →
+            </Button>
+            <Link to="/token">
+              <Button variant="primary" size="sm">+ Book Token</Button>
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* ── 3. "Now Serving" Counter Cards (Hero Grid) ─────────────────────── */}
-      <section className="mb-10">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
-            Active Serving Counters
-          </h2>
-          <span className="text-xs font-medium text-slate-500">Please proceed to the counter when your token is shown</span>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        {/* ── 1. Live Status Metrics with Occupancy Load Bars ───────────────── */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          {[
+            {
+              label: 'Patients in Queue',
+              value: totalWaiting,
+              unit: 'waiting',
+              max: 40,
+              barColor: 'bg-primary-500',
+              textColor: 'text-primary-700',
+              borderColor: 'border-l-primary-500',
+            },
+            {
+              label: 'Avg. Consultation Wait',
+              value: MOCK_QUEUE_STATUS.avgWaitMinutes,
+              unit: 'min',
+              max: 60,
+              barColor: 'bg-warning-500',
+              textColor: 'text-warning-700',
+              borderColor: 'border-l-warning-500',
+            },
+            {
+              label: 'Active Counters / Desks',
+              value: counters.length,
+              unit: 'open',
+              max: 6,
+              barColor: 'bg-success-500',
+              textColor: 'text-success-700',
+              borderColor: 'border-l-success-500',
+            },
+            {
+              label: 'Patients Consulted Today',
+              value: tokensServed,
+              unit: 'served',
+              max: 200,
+              barColor: 'bg-accent-600',
+              textColor: 'text-accent-700',
+              borderColor: 'border-l-accent-500',
+            },
+          ].map(({ label, value, unit, max, barColor, textColor, borderColor }) => (
+            <div
+              key={label}
+              className={`bg-white rounded-xl border border-surface-border border-l-4 ${borderColor} shadow-card px-4 py-3.5`}
+            >
+              <p className="text-2xs font-semibold text-slate-400 uppercase tracking-wider mb-1">{label}</p>
+              <p className={`text-2xl font-bold font-mono ${textColor}`}>
+                {value} <span className="text-xs font-normal text-slate-400 font-sans">{unit}</span>
+              </p>
+              {/* Thin visual occupancy/load bar */}
+              <div className="mt-2.5 h-1 bg-slate-100 rounded-full overflow-hidden">
+                <div
+                  className={`h-1 rounded-full ${barColor} transition-all duration-700`}
+                  style={{ width: `${Math.min(100, (value / max) * 100)}%` }}
+                />
+              </div>
+            </div>
+          ))}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {counters.map((ctr) => {
-            const isCalling = ctr.status === 'Calling'
-            return (
-              <div
-                key={ctr.id}
-                className={[
-                  'rounded-2xl p-5 transition-all duration-300 border bg-white shadow-xs',
-                  isCalling
-                    ? 'border-2 border-accent-600 shadow-glow-accent ring-2 ring-accent-500/20'
-                    : 'border-slate-200 hover:border-slate-300',
-                ].join(' ')}
-              >
-                {/* Status Indicator Pill */}
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-bold text-primary-700 uppercase tracking-wider">
-                    {ctr.name}
-                  </span>
-                  <span
-                    className={[
-                      'text-2xs px-2 py-0.5 rounded-full font-bold uppercase tracking-wider',
-                      isCalling
-                        ? 'bg-accent-100 text-accent-800 border border-accent-300 animate-pulse'
-                        : 'bg-emerald-50 text-emerald-800 border border-emerald-300',
-                    ].join(' ')}
-                  >
-                    {ctr.status}
-                  </span>
-                </div>
+        {/* ── 2. Now Consulting / Counter Status Grid ────────────────────────── */}
+        <section>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-semibold text-slate-700 uppercase tracking-wider flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-success-500 animate-ping inline-flex" />
+              Now Consulting at Workstations
+            </h2>
+            <p className="text-xs text-slate-400">Proceed to the assigned room/counter when your token appears</p>
+          </div>
 
-                {/* Big Token Number */}
-                <div className="text-center py-3 bg-slate-50 rounded-xl border border-slate-200/80 mb-3">
-                  <span className="text-2xs font-bold text-slate-500 uppercase tracking-widest block mb-0.5">
-                    Serving Token
-                  </span>
-                  <div className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight animate-number-pop">
-                    {ctr.currentToken}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            {counters.map((ctr) => {
+              const isCalling = ctr.status === 'Calling'
+              const est       = DEPT_WAIT_ESTIMATES[ctr.deptId] || {}
+              return (
+                <div
+                  key={ctr.id}
+                  className={[
+                    'bg-white rounded-xl border shadow-card p-4 transition-all duration-300',
+                    isCalling
+                      ? 'border-warning-400 ring-1 ring-warning-300/50 shadow-card-elevated'
+                      : 'border-surface-border',
+                  ].join(' ')}
+                >
+                  {/* Department & Status */}
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <span className="text-xs font-bold text-slate-800">{ctr.name}</span>
+                      <span className="text-2xs text-slate-400 block">{ctr.room}</span>
+                    </div>
+                    <span
+                      className={[
+                        'text-2xs px-2 py-0.5 rounded-full font-bold uppercase tracking-wide shrink-0',
+                        isCalling
+                          ? 'bg-warning-100 text-warning-800 border border-warning-300 animate-pulse'
+                          : 'bg-success-50 text-success-700 border border-success-200',
+                      ].join(' ')}
+                    >
+                      {ctr.status}
+                    </span>
+                  </div>
+
+                  {/* Token Number Display */}
+                  <div className="text-center bg-surface-soft rounded-lg py-3 border border-surface-border mb-3">
+                    <p className="text-2xs text-slate-400 font-medium mb-0.5">Active Token</p>
+                    <p className="text-3xl font-black text-slate-900 font-mono tracking-tight">
+                      {ctr.currentToken}
+                    </p>
+                  </div>
+
+                  {/* Practitioner & Specialty Info */}
+                  <div className="text-xs space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-slate-800 truncate">{ctr.staff}</span>
+                      <span className="text-2xs font-mono font-bold text-primary-700">~{ctr.avgConsultMin}m avg</span>
+                    </div>
+                    <p className="text-slate-400 truncate text-2xs">{ctr.specialty}</p>
+                    <div className="flex items-center gap-1.5 pt-1 text-2xs text-slate-500 border-t border-slate-100 mt-1">
+                      <span className={`w-1.5 h-1.5 rounded-full ${est.doctorsAvailable > 0 ? 'bg-success-500' : 'bg-danger-500'}`} />
+                      <span>{est.doctorsAvailable || 1} doctor on duty</span>
+                    </div>
                   </div>
                 </div>
+              )
+            })}
+          </div>
+        </section>
 
-                {/* Service Details Footer */}
-                <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
-                  <span className="font-semibold truncate">{ctr.service}</span>
-                  <span className="text-slate-400 text-2xs font-medium">{ctr.staff}</span>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      </section>
+        {/* ── 3. Token Tracker & Upcoming Queue Section ──────────────────────── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-      {/* ── 4. Main Two-Column Layout: Search Tracker + Upcoming List ──────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Left Column: Personal Token Search & Tracker */}
-        <div className="lg:col-span-1 space-y-6">
-          <Card className="p-6 border border-slate-200">
-            <h3 className="text-base font-bold text-slate-900 mb-1.5 flex items-center gap-2">
-              <span>🔍</span> Track Your Token
-            </h3>
-            <p className="text-xs text-slate-600 mb-4">
-              Enter the token number from your ticket to check your exact position and estimated wait.
-            </p>
+          {/* Left: Token Tracker (lg:col-span-4) */}
+          <div className="lg:col-span-4 space-y-4">
+            <Card className="p-5 border border-surface-border">
+              <h3 className="text-sm font-semibold text-slate-800 mb-1 flex items-center gap-2">
+                <svg className="w-4 h-4 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                Personal Token Tracker
+              </h3>
+              <p className="text-xs text-slate-400 mb-4">
+                Enter your OPD token to check your real-time stage in the consultation journey.
+              </p>
 
-            <form onSubmit={handleSearch} className="space-y-3">
-              <div className="relative">
+              <form onSubmit={handleSearch} className="flex gap-2 mb-1">
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="e.g. T045, A-102"
-                  className="input-field uppercase font-mono font-bold tracking-wider text-sm pr-20"
+                  placeholder="e.g. OPD-043"
+                  className="input-field uppercase font-mono text-sm flex-1"
                 />
-                <Button
-                  type="submit"
-                  size="sm"
-                  variant="primary"
-                  className="absolute right-1.5 top-1.5 text-xs py-1.5"
-                >
-                  Check
+                <Button type="submit" variant="primary" size="sm" className="shrink-0">
+                  Track
                 </Button>
-              </div>
-            </form>
+              </form>
 
-            {/* Search Result Feedback */}
-            {searchResult && (
-              <div className="mt-5 animate-scale-in">
-                {searchResult.found ? (
-                  searchResult.isServingNow ? (
-                    <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-center">
-                      <span className="text-2xl block mb-1">🎉</span>
-                      <h4 className="font-bold text-emerald-800 text-sm">
-                        It's Your Turn Now!
-                      </h4>
-                      <p className="text-xs text-slate-700 mt-1">
-                        Token <strong className="text-slate-900 font-mono">{searchResult.token}</strong> is currently being served at{' '}
-                        <strong className="text-slate-900">{searchResult.counter}</strong> ({searchResult.service}).
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="p-4 rounded-xl bg-primary-50 border border-primary-200 space-y-2">
-                      <div className="flex items-center justify-between border-b border-primary-200 pb-2">
-                        <span className="text-sm font-bold text-primary-800 font-mono">
-                          {searchResult.token}
-                        </span>
-                        <Badge
-                          variant={searchResult.category || 'normal'}
-                          label={CATEGORY_CONFIG[searchResult.category]?.label || 'Standard'}
-                          size="sm"
-                        />
+              {/* Search Result Card */}
+              {searchResult && (
+                <div className="mt-4 animate-scale-in">
+                  {searchResult.found ? (
+                    searchResult.isServingNow ? (
+                      <div className="p-4 rounded-xl bg-success-50 border border-success-200 text-center">
+                        <p className="text-2xl mb-1">🔔</p>
+                        <p className="text-sm font-bold text-success-800">Your Token is Being Called!</p>
+                        <p className="text-xs text-slate-700 mt-1">
+                          Token <strong className="font-mono">{searchResult.token}</strong> please proceed to{' '}
+                          <strong>{searchResult.counter} ({searchResult.room})</strong>.
+                        </p>
+                        <TokenJourneyStepper currentStep={searchResult.journeyStep} />
                       </div>
-                      <div className="grid grid-cols-2 gap-2 text-center pt-1">
-                        <div className="bg-white rounded-lg p-2 border border-primary-100">
-                          <span className="text-2xs font-semibold text-slate-500 block">Queue Position</span>
-                          <span className="text-sm font-bold text-slate-900">#{searchResult.position} in line</span>
-                        </div>
-                        <div className="bg-white rounded-lg p-2 border border-primary-100">
-                          <span className="text-2xs font-semibold text-slate-500 block">Est. Remaining</span>
-                          <span className="text-sm font-bold text-accent-700">~{searchResult.waitMin} mins</span>
-                        </div>
-                      </div>
-                      <p className="text-2xs text-slate-500 text-center pt-1 font-medium">
-                        Please stay nearby. We will notify you when you are up next.
-                      </p>
-                    </div>
-                  )
-                ) : (
-                  <div className="p-4 rounded-xl bg-slate-100 border border-slate-200 text-center text-xs text-slate-600">
-                    Token <strong className="text-slate-900 font-mono">{searchResult.token}</strong> was not found in the active queue. Please check the number or take a new token.
-                  </div>
-                )}
-              </div>
-            )}
-          </Card>
-
-          {/* Service Instructions */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-3 text-xs text-slate-600 shadow-xs">
-            <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider">
-              Service Desk Guidelines
-            </h4>
-            <ul className="space-y-2">
-              <li className="flex items-start gap-2">
-                <span className="text-primary-600 font-bold">•</span>
-                <span>Keep original identification and supporting documents ready before approaching the desk.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-primary-600 font-bold">•</span>
-                <span>Priority service is dedicated at Counter 4 for senior citizens &amp; expectant mothers.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-primary-600 font-bold">•</span>
-                <span>Missed tokens can be re-queued by presenting your ticket to any available clerk.</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Right Column: Upcoming Queue Table */}
-        <div className="lg:col-span-2 space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <span>📋</span> Next in Line (Upcoming Tokens)
-            </h3>
-            <span className="text-xs font-semibold text-slate-500 font-mono">
-              Showing top {queueList.length} waiting
-            </span>
-          </div>
-
-          <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-xs">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="border-b border-slate-200 bg-slate-50 text-2xs uppercase tracking-wider text-slate-500 font-bold">
-                    <th className="py-3 px-4">Pos</th>
-                    <th className="py-3 px-4">Token ID</th>
-                    <th className="py-3 px-4">Visitor</th>
-                    <th className="py-3 px-4">Category</th>
-                    <th className="py-3 px-4 text-right">Est. Wait</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {queueList.map((token, index) => {
-                    const isSearched = searchResult?.found && searchResult.token === token.id
-                    return (
-                      <tr
-                        key={token.id}
-                        className={[
-                          'transition-colors duration-150',
-                          isSearched
-                            ? 'bg-primary-50 font-semibold text-primary-900'
-                            : index % 2 === 0
-                            ? 'bg-white hover:bg-slate-50'
-                            : 'bg-slate-50/50 hover:bg-slate-50',
-                        ].join(' ')}
-                      >
-                        <td className="py-3 px-4 text-xs font-mono font-semibold text-slate-500">
-                          #{index + 1}
-                        </td>
-                        <td className="py-3 px-4 font-mono font-bold text-slate-900">
-                          {token.id}
-                        </td>
-                        <td className="py-3 px-4 text-xs font-medium text-slate-700">
-                          {token.name}
-                        </td>
-                        <td className="py-3 px-4">
+                    ) : (
+                      <div className="p-4 rounded-xl bg-primary-50 border border-primary-200 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-bold text-primary-800 font-mono">
+                            {searchResult.token}
+                          </span>
                           <Badge
-                            variant={token.category}
-                            label={CATEGORY_CONFIG[token.category]?.label || 'Standard'}
-                            showIcon
+                            variant={searchResult.category || 'normal'}
+                            label={CATEGORY_CONFIG[searchResult.category]?.label || 'General'}
                             size="sm"
                           />
-                        </td>
-                        <td className="py-3 px-4 text-right font-mono text-xs text-accent-700 font-bold">
-                          ~{token.waitMin}m
-                        </td>
-                      </tr>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 text-center">
+                          <div className="bg-white rounded-lg p-2 border border-primary-100">
+                            <p className="text-2xs text-slate-400 font-medium">Position</p>
+                            <p className="text-sm font-bold text-slate-900">#{searchResult.position}</p>
+                          </div>
+                          <div className="bg-white rounded-lg p-2 border border-primary-100">
+                            <p className="text-2xs text-slate-400 font-medium">Est. Wait</p>
+                            <p className="text-sm font-bold text-warning-700">~{searchResult.waitMin} min</p>
+                          </div>
+                        </div>
+
+                        {/* Visual Progress Stepper: Checked In → In Queue → Being Called → Consulting */}
+                        <TokenJourneyStepper currentStep={searchResult.journeyStep} />
+
+                        <p className="text-2xs text-slate-500 text-center pt-1">
+                          Estimated call time: <strong>{getCallTime(searchResult.waitMin)}</strong>
+                        </p>
+                      </div>
                     )
-                  })}
-                </tbody>
-              </table>
+                  ) : (
+                    <div className="p-4 rounded-xl bg-surface-muted border border-surface-border text-center text-xs text-slate-500">
+                      Token <strong className="font-mono text-slate-800">{searchResult.token}</strong> not found in the active queue.
+                      <Link to="/token" className="block mt-2 font-semibold text-primary-600 hover:underline">
+                        Book an OPD token →
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              )}
+            </Card>
+
+            {/* Patient Information Guidelines */}
+            <div className="bg-white rounded-xl border border-surface-border p-4 text-xs text-slate-500 space-y-2 shadow-card">
+              <h4 className="text-xs font-semibold text-slate-700 uppercase tracking-wider">Hospital Queue Guidelines</h4>
+              {[
+                'Please present your token ticket or SMS confirmation at the designated consultation desk.',
+                'Wheelchair and priority assistance available at Counter 01 (Registration Desk).',
+                'Keep your contact phone reachable to receive your 5-minute pre-consultation SMS.',
+              ].map((tip) => (
+                <p key={tip} className="flex items-start gap-2">
+                  <span className="text-primary-400 mt-0.5">•</span>
+                  {tip}
+                </p>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: Upcoming Queue Table (lg:col-span-8) */}
+          <div className="lg:col-span-8 space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wider">
+                Upcoming Queue ({queueList.length} Patients)
+              </h3>
+              <span className="text-xs text-slate-400 font-mono">Live Patient Order</span>
+            </div>
+
+            <div className="bg-white rounded-xl border border-surface-border shadow-card overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm text-left">
+                  <thead>
+                    <tr className="bg-surface-soft text-2xs uppercase tracking-wider text-slate-400 font-semibold border-b border-surface-border">
+                      <th className="py-3 px-4">Pos</th>
+                      <th className="py-3 px-4">Token</th>
+                      <th className="py-3 px-4">Patient</th>
+                      <th className="py-3 px-4">Category</th>
+                      <th className="py-3 px-4">Est. Wait</th>
+                      <th className="py-3 px-4">Call Time</th>
+                      <th className="py-3 px-4 text-right">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-surface-border">
+                    {queueList.map((token, index) => {
+                      const isSearched = searchResult?.found && searchResult.token === token.id
+                      const isPriority = token.category !== 'normal'
+                      const statusLabel = index === 0 ? 'Next in Line' : index <= 2 ? 'In Queue' : 'Checked In'
+                      const statusBadge =
+                        index === 0
+                          ? 'bg-amber-100 text-amber-800 border-amber-300 font-bold'
+                          : 'bg-slate-100 text-slate-600 border-slate-200'
+
+                      return (
+                        <tr
+                          key={token.id}
+                          className={[
+                            'transition-colors duration-150',
+                            isSearched
+                              ? 'bg-primary-50 font-semibold'
+                              : isPriority
+                                ? 'border-l-3 border-l-amber-400 bg-amber-50/25 hover:bg-amber-50/50'
+                                : 'hover:bg-surface-soft',
+                          ].join(' ')}
+                        >
+                          <td className="py-3 px-4 text-xs font-mono text-slate-400">
+                            #{index + 1}
+                          </td>
+                          <td className="py-3 px-4 font-mono font-bold text-slate-900 text-sm">
+                            {token.id}
+                          </td>
+                          <td className="py-3 px-4 text-xs text-slate-700 font-medium">
+                            {token.name}
+                          </td>
+                          <td className="py-3 px-4">
+                            <Badge
+                              variant={token.category}
+                              label={CATEGORY_CONFIG[token.category]?.label || 'General'}
+                              showIcon
+                              size="sm"
+                            />
+                          </td>
+                          <td className="py-3 px-4 font-mono text-xs text-warning-700 font-semibold">
+                            ~{token.waitMin}m
+                          </td>
+                          <td className="py-3 px-4 font-mono text-xs text-slate-500">
+                            {getCallTime(token.waitMin)}
+                          </td>
+                          <td className="py-3 px-4 text-right">
+                            <span className={`inline-block text-2xs px-2 py-0.5 rounded-full border ${statusBadge}`}>
+                              {statusLabel}
+                            </span>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>

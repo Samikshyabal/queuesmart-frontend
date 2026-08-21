@@ -1,11 +1,11 @@
-/* ── Google Fonts — must be before @tailwind directives ──────────────────── */
+/* ── Google Fonts ─────────────────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ── Base styles (Light Theme) ────────────────────────────────────────────── */
+/* ── Base — healthcare system defaults ────────────────────────────────────── */
 @layer base {
   *, *::before, *::after {
     box-sizing: border-box;
@@ -16,7 +16,8 @@
   }
 
   body {
-    @apply bg-slate-50 text-slate-800 font-sans antialiased;
+    /* #F8FAFC — cool neutral, clinical but not sterile */
+    @apply bg-surface-soft text-slate-900 font-sans antialiased;
     min-height: 100vh;
     margin: 0;
   }
@@ -27,49 +28,49 @@
     flex-direction: column;
   }
 
-  /* Focus ring — accessibility */
+  /* Focus ring — accessible, blue */
   *:focus-visible {
     @apply outline-none ring-2 ring-primary-500 ring-offset-2 ring-offset-white;
   }
 
-  /* Custom light scrollbar */
-  ::-webkit-scrollbar       { width: 6px; height: 6px; }
+  /* Scrollbar — minimal, clinical */
+  ::-webkit-scrollbar       { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { @apply bg-slate-100; }
   ::-webkit-scrollbar-thumb { @apply bg-slate-300 rounded-full hover:bg-slate-400; }
 }
 
-/* ── Reusable component classes ───────────────────────────────────────────── */
+/* ── Reusable component utilities ─────────────────────────────────────────── */
 @layer components {
 
-  /* Modern Card — used across all pages */
+  /* White surface card — no gradient, no glow, clinical */
   .glass-card {
-    @apply bg-white border border-slate-200/80 rounded-2xl shadow-card;
+    @apply bg-white border border-surface-border rounded-xl shadow-card;
   }
 
-  /* Gradient text — brand titles */
+  /* Gradient text — for token numbers and key metrics only */
   .gradient-text {
-    @apply bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary-600 to-accent-700 bg-clip-text text-transparent;
   }
 
-  /* Input field base */
+  /* Input field — clean, professional form control */
   .input-field {
-    @apply w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5
-           text-slate-900 placeholder:text-slate-400 text-sm shadow-sm
-           focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20
-           transition-all duration-200;
+    @apply w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2.5
+           text-slate-900 placeholder:text-slate-400 text-sm
+           focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/15
+           transition-colors duration-150;
   }
 
-  /* Select field base */
+  /* Select field */
   .select-field {
     @apply input-field cursor-pointer;
   }
 
-  /* Section wrapper — consistent max-width + padding */
+  /* Section wrapper */
   .page-section {
     @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8;
   }
 
-  /* Live dot — animated indicator for real-time status */
+  /* Live dot — real-time status indicator */
   .live-indicator {
     @apply inline-flex items-center gap-2 text-accent-700 text-xs font-semibold uppercase tracking-widest;
   }

@@ -1,12 +1,13 @@
 /**
- * Card — clean container card used across all pages (Light Theme)
+ * Card — clean white surface container
+ * Used across all CityCare Hospital views
  */
 
 const PADDING = {
   none: '',
   sm:   'p-4',
-  md:   'p-6',
-  lg:   'p-8',
+  md:   'p-5',
+  lg:   'p-6',
 }
 
 export default function Card({
@@ -19,10 +20,10 @@ export default function Card({
   return (
     <div
       className={[
-        'bg-white border border-slate-200/90 rounded-2xl shadow-card',
+        'bg-white border border-surface-border rounded-xl shadow-card',
         PADDING[padding] ?? PADDING.md,
         hover
-          ? 'transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover hover:border-slate-300'
+          ? 'transition-shadow duration-200 hover:shadow-card-hover hover:border-slate-300'
           : '',
         className,
       ]
